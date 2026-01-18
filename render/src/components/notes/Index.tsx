@@ -6,25 +6,36 @@ import { NotesList } from '@/components/notes/NotesList';
 import { NoteEditor } from '@/components/notes/NoteEditor';
 import { CreateNoteModal } from '@/components/notes/CreateNoteModal';
 import { EmptyState } from './EmptyState';
-import { useNotes } from '@/hooks/notes/useNotes.hook';
 import { useGetNotes } from '@/hooks/notes/useGetNotes.Hook';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useCreateNote } from '@/hooks/notes/useCreateNote.Hook';
+import { Note } from '@/types/notes.core';
+
 const Index = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState('all');
-  const {
-    pinnedNotes,
-    unpinnedNotes,
-    selectedNote,
-    setSelectedNote,
-    updateNote,
-    deleteNote,
-    togglePin,
-    reorderNotes,
-  } = useNotes();
-  const { notes, loading, error,refetch } = useGetNotes({})
-  const {note, submitCreateNote, loading: createLoading, error: createError} = useCreateNote();
+  const [selectedNote, setSelectedNote] = React.useState<Note | null>(null);
+  const { notes, loading, error, refetch } = useGetNotes({});
+  const { note, submitCreateNote, loading: createLoading, error: createError } = useCreateNote();
+
+  const pinnedNotes = notes.filter(note => note.isPinned ?? false);
+  const unpinnedNotes = notes.filter(note => !note.isPinned);
+  
+  const updateNote = (id: string, updates: Partial<Note>) => {
+    // Implementation needed
+  };
+  
+  const deleteNote = (id: string) => {
+    // Implementation needed
+  };
+  
+  const togglePin = (id: string) => {
+    // Implementation needed
+  };
+  
+  const reorderNotes = (activeId: string, overId: string) => {
+    // Implementation needed
+  };
   const filteredPinned = activeFilter === 'pinned' ? pinnedNotes : pinnedNotes;
   const filteredUnpinned = activeFilter === 'pinned' ? [] : unpinnedNotes;
   const totalCount = filteredPinned.length + filteredUnpinned.length;

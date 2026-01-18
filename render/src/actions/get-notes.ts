@@ -13,5 +13,9 @@ export async function getNotes({ page, limit }: GetNotesParams) {
         skip: (page - 1) * limit,
         take: limit,
     });
-    return notes;
+    return notes.map(note => ({
+        ...note,
+        color: note.color || undefined,
+        isPinned: note.isPinned || false,
+    }));
 }

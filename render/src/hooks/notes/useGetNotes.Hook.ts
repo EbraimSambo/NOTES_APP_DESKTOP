@@ -1,5 +1,5 @@
 import React from "react";
-import { Note } from "../../../generated/prisma/browser";
+import { Note } from '@/types/notes.core';
 import { getNotes } from "@/actions/get-notes";
 
 
