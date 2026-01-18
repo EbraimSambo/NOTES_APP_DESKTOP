@@ -17,9 +17,11 @@ import {
 } from '@dnd-kit/sortable';
 import { useState } from 'react';
 import { SortableNoteCard } from './SortableNoteCard';
-import { IconNotebook } from '@tabler/icons-react';
+import { IconNotebook, IconLoader2 } from '@tabler/icons-react';
 import { Note } from '@/types/notes.core';
 import { NoteCard } from './NotesCard';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useInfiniteScroll } from '@/hooks/notes/useInfiniteScroll.Hook';
 
 interface NotesListProps {
   pinnedNotes: Note[];
@@ -28,6 +30,9 @@ interface NotesListProps {
   onSelectNote: (note: Note) => void;
   onTogglePin: (id: string) => void;
   onReorder: (activeId: string, overId: string) => void;
+  hasMore: boolean;
+  loadingMore: boolean;
+  onLoadMore: () => void;
 }
 
 export function NotesList({
@@ -37,8 +42,17 @@ export function NotesList({
   onSelectNote,
   onTogglePin,
   onReorder,
+  hasMore,
+  loadingMore,
+  onLoadMore,
 }: NotesListProps) {
   const [activeNote, setActiveNote] = useState<Note | null>(null);
+  const { ref } = useInfiniteScroll({
+    hasMore,
+    loadingMore,
+    onLoadMore,
+    threshold: 0.1
+  });
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -149,6 +163,25 @@ export function NotesList({
                 </div>
               </SortableContext>
             </motion.section>
+          )}
+          
+          {/* Loading More Indicator */}
+          {hasMore && (
+            <div 
+              ref={ref}
+              className="flex justify-center py-4"
+            >
+              {loadingMore ? (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <IconLoader2 className="w-4 h-4 animate-spin" />
+                  Carregando mais notas...
+                </div>
+              ) : (
+                <div className="text-xs text-muted-foreground">
+                  Role para carregar mais
+                </div>
+              )}
+            </div>
           )}
         </AnimatePresence>
 

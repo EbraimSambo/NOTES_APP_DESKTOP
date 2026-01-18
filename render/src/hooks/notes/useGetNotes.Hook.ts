@@ -1,34 +1,71 @@
 import React from "react";
 import { Note } from '@/types/notes.core';
 import { getNotes } from "@/actions/get-notes";
-
+import { useAtom } from 'jotai';
+import { notesAtom, notesLoadingAtom, notesErrorAtom, paginationAtom, loadingMoreAtom } from '@/store/atoms';
 
 interface GetNotesParams {
     page?: number;
     limit?: number;
+    reset?: boolean;
 }
 
-export function useGetNotes({ page = 1, limit = 10 }: GetNotesParams) {
-    const [notes, setNotes] = React.useState<Note[]>([]);
-    const [loading, setLoading] = React.useState(true);
-    const [error, setError] = React.useState<string | null>(null);
+export function useGetNotes({ page = 1, limit = 10, reset = false }: GetNotesParams = {}) {
+    const [notes, setNotes] = useAtom(notesAtom);
+    const [loading, setLoading] = useAtom(notesLoadingAtom);
+    const [error, setError] = useAtom(notesErrorAtom);
+    const [pagination, setPagination] = useAtom(paginationAtom);
+    const [loadingMore, setLoadingMore] = useAtom(loadingMoreAtom);
 
-    const fetchNotes = React.useCallback(async () => {
+    const fetchNotes = React.useCallback(async (pageNum: number = 1, isLoadMore: boolean = false) => {
         try {
-            setLoading(true);
-            setError(null);
-            const notesServer = await getNotes({ page, limit });
-            setNotes(notesServer as unknown as Note[]);
+            if (isLoadMore) {
+                setLoadingMore(true);
+            } else {
+                setLoading(true);
+                setError(null);
+            }
+            
+            const notesServer = await getNotes({ page: pageNum, limit });
+            
+            if (reset || pageNum === 1) {
+                setNotes(notesServer as unknown as Note[]);
+                setPagination({
+                    page: 1,
+                    limit,
+                    hasMore: notesServer.length >= limit,
+                    totalCount: notesServer.length
+                });
+            } else {
+                setNotes(prevNotes => [...prevNotes, ...(notesServer as unknown as Note[])]);
+                setPagination(prev => ({
+                    ...prev,
+                    page: pageNum,
+                    hasMore: notesServer.length >= limit,
+                    totalCount: prev.totalCount + notesServer.length
+                }));
+            }
         } catch (error) {
             setError(error instanceof Error ? error.message : 'Unknown error');
         } finally {
             setLoading(false);
+            setLoadingMore(false);
         }
-    }, [page, limit]);
+    }, [limit, reset, setNotes, setLoading, setError, setPagination, setLoadingMore]);
+
+    const loadMore = React.useCallback(() => {
+        if (!pagination.hasMore || loadingMore || loading) return;
+        const nextPage = pagination.page + 1;
+        fetchNotes(nextPage, true);
+    }, [pagination.hasMore, pagination.page, loadingMore, loading, fetchNotes]);
+
+    const resetNotes = React.useCallback(() => {
+        fetchNotes(1, false);
+    }, [fetchNotes]);
 
     React.useEffect(() => {
-        fetchNotes();
-    }, [fetchNotes]);
+        fetchNotes(page, false);
+    }, [fetchNotes, page]);
 
     const reorderNotes = (activeId: string, overId: string) => {
         setNotes(prevNotes => {
@@ -48,11 +85,16 @@ export function useGetNotes({ page = 1, limit = 10 }: GetNotesParams) {
             }));
         });
     };
+    
     return {
         notes,
         loading,
+        loadingMore,
         error,
+        hasMore: pagination.hasMore,
         setNotes,
-        reorderNotes
+        reorderNotes,
+        loadMore,
+        resetNotes
     };
 }

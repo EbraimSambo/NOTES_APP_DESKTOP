@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { NotesList } from '@/components/notes/NotesList';
@@ -8,51 +8,31 @@ import { CreateNoteModal } from '@/components/notes/CreateNoteModal';
 import { EmptyState } from './EmptyState';
 import { useGetNotes } from '@/hooks/notes/useGetNotes.Hook';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useCreateNote } from '@/hooks/notes/useCreateNote.Hook';
-import { Note } from '@/types/notes.core';
+import { useNoteActions } from '@/hooks/notes/useNoteActions.Hook';
+import { useUIState } from '@/hooks/notes/useUIState.Hook';
 
 const Index = () => {
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [activeFilter, setActiveFilter] = useState('all');
-  const [selectedNote, setSelectedNote] = React.useState<Note | null>(null);
-  const { notes, loading, setNotes,reorderNotes } = useGetNotes({});
-  const { note, submitCreateNote, loading: createLoading, error: createError, setNewNote } = useCreateNote();
-
-  const pinnedNotes = notes.filter(note => note.isPinned ?? false);
-  const unpinnedNotes = notes.filter(note => !note.isPinned);
-  
-  const updateNote = (id: string, updates: Partial<Note>) => {
-    // Implementation needed
-  };
-  
-  const deleteNote = (id: string) => {
-    // Implementation needed
-  };
-  
-  const togglePin = (id: string) => {
-    // Implementation needed
-  };
-  
-
-  const filteredPinned = activeFilter === 'pinned' ? pinnedNotes : pinnedNotes;
-  const filteredUnpinned = activeFilter === 'pinned' ? [] : unpinnedNotes;
-  const totalCount = filteredPinned.length + filteredUnpinned.length;
-
-  React.useEffect(() => {
-    if (note) {
-      setNotes(prevNotes => [note, ...prevNotes]);
-      setNewNote(null)
-    }
-  }, [note, setNotes]);
+  const { 
+    selectedNote, 
+    activeFilter, 
+    filteredPinned, 
+    filteredUnpinned, 
+    totalCount,
+    openCreateModal,
+    selectNote,
+    setFilter
+  } = useUIState();
+  const { loading, reorderNotes, hasMore, loadingMore, loadMore } = useGetNotes({});
+  const { togglePin } = useNoteActions();
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background">
       {/* Sidebar */}
       <Sidebar
-        onNewNote={() => setIsCreateModalOpen(true)}
+        onNewNote={openCreateModal}
         activeFilter={activeFilter}
-        onFilterChange={setActiveFilter}
-        notesCount={notes.length}
+        onFilterChange={setFilter}
+        notesCount={totalCount}
       />
 
       {/* Notes List Panel */}
@@ -76,40 +56,30 @@ const Index = () => {
             ))}
           </div>
         )}
-        {notes && notes.length > 0 && <NotesList
+        {totalCount > 0 && <NotesList
           pinnedNotes={filteredPinned}
           unpinnedNotes={filteredUnpinned}
           selectedNote={selectedNote}
-          onSelectNote={setSelectedNote}
+          onSelectNote={selectNote}
           onTogglePin={togglePin}
           onReorder={reorderNotes}
+          hasMore={hasMore}
+          loadingMore={loadingMore}
+          onLoadMore={loadMore}
         />}
       </motion.div>
 
       {/* Editor/Viewer Panel */}
       <div className="flex-1 bg-background">
         {selectedNote ? (
-          <NoteEditor
-            note={selectedNote}
-            onUpdate={updateNote}
-            onDelete={(id) => {
-              deleteNote(id);
-              setSelectedNote(null);
-            }}
-            onTogglePin={togglePin}
-          />
+          <NoteEditor />
         ) : (
-          <EmptyState onNewNote={() => setIsCreateModalOpen(true)} />
+          <EmptyState onNewNote={openCreateModal} />
         )}
       </div>
 
       {/* Create Note Modal */}
-      <CreateNoteModal
-        isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
-        onCreate={submitCreateNote}
-        isLoading={createLoading}
-      />
+      <CreateNoteModal />
     </div>
   );
 };

@@ -1,0 +1,33 @@
+import { useAtom } from 'jotai';
+import { selectedNoteAtom, activeFilterAtom, createModalOpenAtom, filteredNotesAtom } from '@/store/atoms';
+
+export function useUIState() {
+  const [selectedNote, setSelectedNote] = useAtom(selectedNoteAtom);
+  const [activeFilter, setActiveFilter] = useAtom(activeFilterAtom);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useAtom(createModalOpenAtom);
+  const { pinned: filteredPinned, unpinned: filteredUnpinned, totalCount } = useAtom(filteredNotesAtom)[0];
+
+  const openCreateModal = () => setIsCreateModalOpen(true);
+  const closeCreateModal = () => setIsCreateModalOpen(false);
+  const selectNote = (note: any) => setSelectedNote(note);
+  const clearSelectedNote = () => setSelectedNote(null);
+  const setFilter = (filter: string) => setActiveFilter(filter);
+
+  return {
+    // Estado
+    selectedNote,
+    activeFilter,
+    isCreateModalOpen,
+    filteredPinned,
+    filteredUnpinned,
+    totalCount,
+    
+    // Ações
+    openCreateModal,
+    closeCreateModal,
+    selectNote,
+    clearSelectedNote,
+    setFilter,
+    setSelectedNote
+  };
+}

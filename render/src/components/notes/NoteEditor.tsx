@@ -14,36 +14,39 @@ import {
 import { format } from 'date-fns';
 import { Note } from '@/types/notes.core';
 import { ptBR } from 'date-fns/locale';
+import { useNoteEditor } from '@/hooks/notes/useNoteEditor.Hook';
 
-interface NoteEditorProps {
-  note: Note;
-  onUpdate: (id: string, updates: Partial<Note>) => void;
-  onDelete: (id: string) => void;
-  onTogglePin: (id: string) => void;
-}
-
-export function NoteEditor({ note, onUpdate, onDelete, onTogglePin }: NoteEditorProps) {
+export function NoteEditor() {
+  const { selectedNote, updateNote, deleteNote, togglePin, clearSelectedNote } = useNoteEditor();
+  
+  if (!selectedNote) return null;
+  
   const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState(note.title);
-  const [content, setContent] = useState(note.content);
+  const [title, setTitle] = useState(selectedNote.title);
+  const [content, setContent] = useState(selectedNote.content);
 
   useEffect(() => {
-    setTitle(note.title);
-    setContent(note.content);
-  }, [note]);
+    setTitle(selectedNote.title);
+    setContent(selectedNote.content);
+  }, [selectedNote]);
 
   const handleSave = () => {
-    onUpdate(note.id, { title, content });
+    updateNote(selectedNote.id, { title, content });
   };
 
   const handleTitleChange = (newTitle: string) => {
     setTitle(newTitle);
-    onUpdate(note.id, { title: newTitle });
+    updateNote(selectedNote.id, { title: newTitle });
   };
 
   const handleContentChange = (newContent: string) => {
     setContent(newContent);
-    onUpdate(note.id, { content: newContent });
+    updateNote(selectedNote.id, { content: newContent });
+  };
+  
+  const handleDelete = () => {
+    deleteNote(selectedNote.id);
+    clearSelectedNote();
   };
 
   return (
@@ -57,24 +60,24 @@ export function NoteEditor({ note, onUpdate, onDelete, onTogglePin }: NoteEditor
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <IconCalendar className="w-3.5 h-3.5" />
-            <span>{format(note.createdAt, 'MMM d, yyyy', { locale: ptBR })}</span>
+            <span>{format(selectedNote.createdAt, 'MMM d, yyyy', { locale: ptBR })}</span>
           </div>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <IconClock className="w-3.5 h-3.5" />
-            <span>Editar {format(note.updatedAt, 'MMM d, yyyy', { locale: ptBR })}</span>
+            <span>Editar {format(selectedNote.updatedAt, 'MMM d, yyyy', { locale: ptBR })}</span>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
           <button
-            onClick={() => onTogglePin(note.id)}
+            onClick={() => togglePin(selectedNote.id)}
             className={`p-2 rounded-lg transition-colors ${
-              note.isPinned
+              selectedNote.isPinned
                 ? 'bg-primary/10 text-primary'
                 : 'hover:bg-accent text-muted-foreground'
             }`}
           >
-            {note.isPinned ? (
+            {selectedNote.isPinned ? (
               <IconPinFilled className="w-5 h-5" />
             ) : (
               <IconPin className="w-5 h-5" />
@@ -95,7 +98,7 @@ export function NoteEditor({ note, onUpdate, onDelete, onTogglePin }: NoteEditor
             )}
           </button>
           <button
-            onClick={() => onDelete(note.id)}
+            onClick={() => handleDelete()}
             className="p-2 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
           >
             <IconTrash className="w-5 h-5" />
@@ -123,10 +126,10 @@ export function NoteEditor({ note, onUpdate, onDelete, onTogglePin }: NoteEditor
           </div>
         ) : (
           <div className="p-6">
-            <h1 className="text-3xl font-bold mb-6">{note.title || 'Untitled'}</h1>
+            <h1 className="text-3xl font-bold mb-6">{selectedNote.title || 'Untitled'}</h1>
             <div className="markdown-body">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {note.content || '*Ainda não há conteúdo. Clique em editar para começar a escrever.*'}
+                {selectedNote.content || '*Ainda não há conteúdo. Clique em editar para começar a escrever.*'}
               </ReactMarkdown>
             </div>
           </div>
@@ -134,9 +137,9 @@ export function NoteEditor({ note, onUpdate, onDelete, onTogglePin }: NoteEditor
       </div>
 
       {/* Tags */}
-      {note.tags && note.tags.length > 0 && (
+      {selectedNote.tags && selectedNote.tags.length > 0 && (
         <div className="p-4 border-t border-border/50 flex items-center gap-2">
-          {note.tags.map((tag) => (
+          {selectedNote.tags.map((tag) => (
             <span
               key={tag.id}
               className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary"
