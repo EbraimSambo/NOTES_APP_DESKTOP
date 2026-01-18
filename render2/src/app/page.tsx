@@ -1,6 +1,7 @@
 import Index from "@/components/notes/Index";
 
-export default function App() {
+
+export default function Home() {
   return (
     <Index />
   );
