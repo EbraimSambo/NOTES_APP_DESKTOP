@@ -5,8 +5,9 @@ export interface Tag {
 
 export interface Note {
   id: string;
-  title: string;
-  content: string;
+  orderId: number;
+  title?: string;
+  content?: string;
   createdAt: Date;
   updatedAt: Date;
   color?: string;

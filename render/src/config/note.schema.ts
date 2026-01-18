@@ -3,7 +3,8 @@ import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import {v7 as uuid} from "uuid"
 
 export const notesTable = sqliteTable("notes", {
-  id: text().$default(() => uuid()),
+  id: text().$default(() => uuid()).notNull(),
+  orderId: int().primaryKey({ autoIncrement: true }),
   title: text().notNull(),
   content: text().notNull(),
   color: text(),

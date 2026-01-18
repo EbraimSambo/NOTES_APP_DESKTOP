@@ -13,6 +13,7 @@ import {
 } from '@tabler/icons-react';
 import { format } from 'date-fns';
 import { Note } from '@/types/notes.core';
+import { ptBR } from 'date-fns/locale';
 
 interface NoteEditorProps {
   note: Note;
@@ -56,11 +57,11 @@ export function NoteEditor({ note, onUpdate, onDelete, onTogglePin }: NoteEditor
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <IconCalendar className="w-3.5 h-3.5" />
-            <span>{format(note.createdAt, 'MMM d, yyyy')}</span>
+            <span>{format(note.createdAt, 'MMM d, yyyy', { locale: ptBR })}</span>
           </div>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <IconClock className="w-3.5 h-3.5" />
-            <span>Editar {format(note.updatedAt, 'MMM d, yyyy')}</span>
+            <span>Editar {format(note.updatedAt, 'MMM d, yyyy', { locale: ptBR })}</span>
           </div>
         </div>
 
@@ -125,7 +126,7 @@ export function NoteEditor({ note, onUpdate, onDelete, onTogglePin }: NoteEditor
             <h1 className="text-3xl font-bold mb-6">{note.title || 'Untitled'}</h1>
             <div className="markdown-body">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {note.content || '*No content yet. Click edit to start writing.*'}
+                {note.content || '*Ainda não há conteúdo. Clique em editar para começar a escrever.*'}
               </ReactMarkdown>
             </div>
           </div>
@@ -137,10 +138,10 @@ export function NoteEditor({ note, onUpdate, onDelete, onTogglePin }: NoteEditor
         <div className="p-4 border-t border-border/50 flex items-center gap-2">
           {note.tags.map((tag) => (
             <span
-              key={tag}
+              key={tag.id}
               className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary"
             >
-              #{tag}
+              #{tag.name}
             </span>
           ))}
         </div>

@@ -2,7 +2,7 @@
 
 import { dbDriver } from "@/config/drizzle.db";
 import { notesTable } from "@/config/note.schema";
-import { prisma } from "@/config/prisma.config";
+import { desc } from "drizzle-orm";
 
 
 interface GetNotesParams {
@@ -11,10 +11,14 @@ interface GetNotesParams {
 }
 
 export async function getNotes({ page, limit }: GetNotesParams) {
-    const notes = await dbDriver.select().from(notesTable).limit(limit).offset((page - 1) * limit);
+    const notes = await dbDriver.select()
+    .from(notesTable)
+    .limit(limit)
+    .offset((page - 1) * limit)
+    .orderBy(desc(notesTable.createdAt));
     return notes.map(note => ({
         ...note,
         color: note.color || undefined,
-        isPinned: Boolean(note.isPinned),
+        isPinned: note.isPinned === 'true',
     }));
 }

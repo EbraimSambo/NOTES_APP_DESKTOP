@@ -70,9 +70,9 @@ export function NoteCard({ note, isSelected, onClick, onTogglePin }: NoteCardPro
       <h3 className="font-semibold text-foreground mb-2 pr-16 line-clamp-1">
         {note.title || 'Untitled'}
       </h3>
-      <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+      {note.content && <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
         {getPreview(note.content)}
-      </p>
+      </p>}
 
       {/* Footer */}
       <div className="flex items-center justify-between">
@@ -83,10 +83,10 @@ export function NoteCard({ note, isSelected, onClick, onTogglePin }: NoteCardPro
           <div className="flex gap-1">
             {note.tags.slice(0, 2).map((tag) => (
               <span
-                key={tag}
+                key={tag.id}
                 className="px-2 py-0.5 text-xs rounded-full bg-primary/10 text-primary"
               >
-                {tag}
+                {tag.name}
               </span>
             ))}
           </div>

@@ -8,11 +8,12 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Note, Tag } from '@/types/notes.core';
+import { CreateNote } from '@/actions/create-notes';
 
 interface CreateNoteModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onCreate: (note: Omit<Note, 'id' | 'createdAt' | 'updatedAt'>) => void;
+  onCreate: (note: CreateNote) => void;
   isLoading: boolean;
 }
 
@@ -42,9 +43,11 @@ export function CreateNoteModal({ isOpen, onClose, onCreate, isLoading }: Create
 
   const handleCreate = () => {
     onCreate({
-      title: title || 'Untitled',
-      content,
-      tags: tags.map(tag => ({ id: '', name: tag })),
+      note: {
+        title: title || 'Untitled',
+        content,
+        tags: tags.map(tag => ({ id: '', name: tag })),
+      }
     });
     setTitle('');
     setContent('');
@@ -58,7 +61,7 @@ export function CreateNoteModal({ isOpen, onClose, onCreate, isLoading }: Create
         <DialogHeader className="p-6 pb-0">
           <DialogTitle className="sr-only">Create New Note</DialogTitle>
         </DialogHeader>
-        
+
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}

@@ -10,7 +10,7 @@ export function EmptyState({ onNewNote }: EmptyStateProps) {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="flex-1 flex flex-col items-center justify-center p-8"
+      className="flex-1 flex flex-col items-center justify-center p-8 h-full"
     >
       <motion.div
         initial={{ scale: 0.8 }}

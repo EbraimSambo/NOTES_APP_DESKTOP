@@ -15,8 +15,8 @@ const Index = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState('all');
   const [selectedNote, setSelectedNote] = React.useState<Note | null>(null);
-  const { notes, loading, error, refetch } = useGetNotes({});
-  const { note, submitCreateNote, loading: createLoading, error: createError } = useCreateNote();
+  const { notes, loading, setNotes,reorderNotes } = useGetNotes({});
+  const { note, submitCreateNote, loading: createLoading, error: createError, setNewNote } = useCreateNote();
 
   const pinnedNotes = notes.filter(note => note.isPinned ?? false);
   const unpinnedNotes = notes.filter(note => !note.isPinned);
@@ -33,18 +33,17 @@ const Index = () => {
     // Implementation needed
   };
   
-  const reorderNotes = (activeId: string, overId: string) => {
-    // Implementation needed
-  };
+
   const filteredPinned = activeFilter === 'pinned' ? pinnedNotes : pinnedNotes;
   const filteredUnpinned = activeFilter === 'pinned' ? [] : unpinnedNotes;
   const totalCount = filteredPinned.length + filteredUnpinned.length;
 
   React.useEffect(() => {
     if (note) {
-      refetch();
+      setNotes(prevNotes => [note, ...prevNotes]);
+      setNewNote(null)
     }
-  }, [note, refetch]);
+  }, [note, setNotes]);
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background">
@@ -71,9 +70,9 @@ const Index = () => {
           </p>
         </header>
         {loading && (
-          <div className="">
+          <div className="space-y-4 p-4">
             {Array.from({ length: 10 }).map((_, index) => (
-              <Skeleton key={index} className='h-20' />
+              <Skeleton key={index} className='h-18 bg-gray-50/15 border w-full' />
             ))}
           </div>
         )}
