@@ -1,5 +1,7 @@
 "use server";
 
+import { dbDriver } from "@/config/drizzle.db";
+import { notesTable } from "@/config/note.schema";
 import { prisma } from "@/config/prisma.config";
 
 
@@ -9,13 +11,10 @@ interface GetNotesParams {
 }
 
 export async function getNotes({ page, limit }: GetNotesParams) {
-    const notes = await prisma.note.findMany({
-        skip: (page - 1) * limit,
-        take: limit,
-    });
+    const notes = await dbDriver.select().from(notesTable).limit(limit).offset((page - 1) * limit);
     return notes.map(note => ({
         ...note,
         color: note.color || undefined,
-        isPinned: note.isPinned || false,
+        isPinned: Boolean(note.isPinned),
     }));
 }
