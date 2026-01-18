@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { IconPin, IconPinFilled, IconDots } from '@tabler/icons-react';
 import { formatDistanceToNow } from 'date-fns';
 import { Note } from '@/types/notes.core';
-
+import { ptBR } from 'date-fns/locale';
 interface NoteCardProps {
   note: Note;
   isSelected: boolean;
@@ -68,7 +68,7 @@ export function NoteCard({ note, isSelected, onClick, onTogglePin }: NoteCardPro
 
       {/* Content */}
       <h3 className="font-semibold text-foreground mb-2 pr-16 line-clamp-1">
-        {note.title || 'Untitled'}
+        {note.title || 'Sem título'}
       </h3>
       {note.content && <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
         {getPreview(note.content)}
@@ -77,7 +77,7 @@ export function NoteCard({ note, isSelected, onClick, onTogglePin }: NoteCardPro
       {/* Footer */}
       <div className="flex items-center justify-between">
         <span className="text-xs text-muted-foreground">
-          {formatDistanceToNow(note.updatedAt, { addSuffix: true })}
+          {formatDistanceToNow(note.updatedAt, { addSuffix: true, locale: ptBR })}
         </span>
         {note.tags && note.tags.length > 0 && (
           <div className="flex gap-1">

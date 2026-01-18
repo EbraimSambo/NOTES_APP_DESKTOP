@@ -12,7 +12,6 @@ import {
   IconClock,
 } from '@tabler/icons-react';
 import { format } from 'date-fns';
-import { Note } from '@/types/notes.core';
 import { ptBR } from 'date-fns/locale';
 import { useNoteEditor } from '@/hooks/notes/useNoteEditor.Hook';
 
@@ -126,7 +125,7 @@ export function NoteEditor() {
           </div>
         ) : (
           <div className="p-6">
-            <h1 className="text-3xl font-bold mb-6">{selectedNote.title || 'Untitled'}</h1>
+            <h1 className="text-3xl font-bold mb-6">{selectedNote.title || 'Sem título'}</h1>
             <div className="markdown-body">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {selectedNote.content || '*Ainda não há conteúdo. Clique em editar para começar a escrever.*'}

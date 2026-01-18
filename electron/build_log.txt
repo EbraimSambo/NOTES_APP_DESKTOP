@@ -1,0 +1,157 @@
+
+> electron@1.0.0 dist /home/ebraimsambo/DEV/BOAVIDA/DESKTOP/electron
+> npm run build && electron-builder --win
+
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
+
+> electron@1.0.0 build
+> cd ../renderer && npm run build && cd ../electron && tsc
+
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
+
+> renderer@0.1.0 build
+> next build
+
+   ▲ Next.js 15.5.9
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 2.9s
+   Linting and checking validity of types ...
+
+ ⚠ The Next.js plugin was not detected in your ESLint configuration. See https://nextjs.org/docs/app/api-reference/config/eslint#migrating-existing-config
+   Collecting page data ...
+   Generating static pages (0/6) ...
+   Generating static pages (1/6) 
+   Generating static pages (2/6) 
+   Generating static pages (4/6) 
+ ✓ Generating static pages (6/6)
+   Finalizing page optimization ...
+   Collecting build traces ...
+   Exporting (0/2) ...
+ ✓ Exporting (2/2)
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                     139 kB         249 kB
+├ ○ /_not-found                            995 B         103 kB
+└ ○ /files                               29.8 kB         140 kB
++ First Load JS shared by all             102 kB
+  ├ chunks/813-0abc324eea6685f1.js         46 kB
+  ├ chunks/cd088030-882da87fbf40793c.js  54.2 kB
+  └ other shared chunks (total)          1.93 kB
+
+
+○  (Static)  prerendered as static content
+
+  • electron-builder  version=26.0.12 os=6.17.12-300.fc43.x86_64
+  • loaded configuration  file=package.json ("build" field)
+  • executing @electron/rebuild  electronVersion=39.2.7 arch=x64 buildFromSource=false appDir=./
+  • installing native dependencies  arch=x64
+  • completed installing native dependencies
+  • packaging       platform=win32 arch=x64 electron=39.2.7 appOutDir=dist-win/win-unpacked
+(node:117134) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+  • updating asar integrity executable resource  executablePath=dist-win/win-unpacked/BoaVida-XLSX.exe
+  • signing with signtool.exe  path=dist-win/win-unpacked/BoaVida-XLSX.exe
+  • building        target=nsis file=dist-win/BoaVida-XLSX Setup 1.0.0.exe archs=x64 oneClick=false perMachine=false
+  • signing with signtool.exe  path=dist-win/win-unpacked/resources/elevate.exe
+  ⨯ /home/ebraimsambo/.cache/electron-builder/nsis/nsis-3.0.4.1/linux/makensis process failed ERR_ELECTRON_BUILDER_CANNOT_EXECUTE
+Exit code:
+1
+Output:
+Command line defined: "APP_ID=com.boavida.desktop"
+Command line defined: "APP_GUID=d6c15929-8bc0-5ac4-a959-98f12ffd0d0e"
+Command line defined: "UNINSTALL_APP_KEY=d6c15929-8bc0-5ac4-a959-98f12ffd0d0e"
+Command line defined: "PRODUCT_NAME=BoaVida-XLSX"
+Command line defined: "PRODUCT_FILENAME=BoaVida-XLSX"
+Command line defined: "APP_FILENAME=BoaVida-XLSX"
+Command line defined: "APP_DESCRIPTION=Desktop application for BoaVida"
+Command line defined: "VERSION=1.0.0"
+Command line defined: "PROJECT_DIR=/home/ebraimsambo/DEV/BOAVIDA/DESKTOP/electron"
+Command line defined: "BUILD_RESOURCES_DIR=/home/ebraimsambo/DEV/BOAVIDA/DESKTOP/electron/build"
+Command line defined: "APP_PACKAGE_NAME=electron"
+Command line defined: "MUI_ICON=/home/ebraimsambo/DEV/BOAVIDA/DESKTOP/electron/assets/images/logo.png"
+Command line defined: "MUI_UNICON=/home/ebraimsambo/DEV/BOAVIDA/DESKTOP/electron/assets/images/logo.png"
+Command line defined: "APP_64=/home/ebraimsambo/DEV/BOAVIDA/DESKTOP/electron/dist-win/electron-1.0.0-x64.nsis.7z"
+Command line defined: "APP_64_NAME=electron-1.0.0-x64.nsis.7z"
+Command line defined: "APP_64_HASH=9C4759A03AFEB93160025CC9E9918E52DB43E683F6A7879EE0AAE79C8998106F6254B02A0BF6CE64D0E63684960A2BAA114E46390B832688716C4AD860846422"
+Command line defined: "APP_64_UNPACKED_SIZE=341276"
+Command line defined: "APP_INSTALLER_STORE_FILE=electron-updater\installer.exe"
+Command line defined: "COMPRESSION_METHOD=7z"
+Command line defined: "MULTIUSER_INSTALLMODE_ALLOW_ELEVATION"
+Command line defined: "INSTALL_MODE_PER_ALL_USERS_REQUIRED"
+Command line defined: "allowToChangeInstallationDirectory"
+Command line defined: "SHORTCUT_NAME=BoaVida XLSX"
+Command line defined: "UNINSTALL_DISPLAY_NAME=BoaVida-XLSX 1.0.0"
+Command line defined: "RECREATE_DESKTOP_SHORTCUT"
+Command line defined: "MUI_WELCOMEFINISHPAGE_BITMAP=${NSISDIR}\Contrib\Graphics\Wizard\nsis3-metro.bmp"
+Command line defined: "MUI_UNWELCOMEFINISHPAGE_BITMAP=${NSISDIR}\Contrib\Graphics\Wizard\nsis3-metro.bmp"
+Command line defined: "UNINSTALLER_ICON=/home/ebraimsambo/DEV/BOAVIDA/DESKTOP/electron/assets/images/logo.png"
+Command line defined: "ESTIMATED_SIZE=341275"
+Command line defined: "COMPRESS=auto"
+Command line defined: "BUILD_UNINSTALLER"
+Command line defined: "UNINSTALLER_OUT_FILE=Z:\home\ebraimsambo\DEV\BOAVIDA\DESKTOP\electron\dist-win\__uninstaller-nsis-electron.exe"
+Processing config: /home/ebraimsambo/.cache/electron-builder/nsis/nsis-3.0.4.1/nsisconf.nsh
+Processing script file: "<stdin>" (UTF8)
+
+Error output:
+Error while loading icon from "/home/ebraimsambo/DEV/BOAVIDA/DESKTOP/electron/assets/images/logo.png": invalid icon file
+Error in macro MUI_INTERFACE on macroline 87
+Error in macro MUI_UNPAGE_INIT on macroline 7
+Error in macro MUI_UNPAGE_WELCOME on macroline 5
+!include: error in script: "assistedInstaller.nsh" on line 70
+Error in script "<stdin>" on line 110 -- aborting creation process
+  failedTask=build stackTrace=Error: /home/ebraimsambo/.cache/electron-builder/nsis/nsis-3.0.4.1/linux/makensis process failed ERR_ELECTRON_BUILDER_CANNOT_EXECUTE
+Exit code:
+1
+Output:
+Command line defined: "APP_ID=com.boavida.desktop"
+Command line defined: "APP_GUID=d6c15929-8bc0-5ac4-a959-98f12ffd0d0e"
+Command line defined: "UNINSTALL_APP_KEY=d6c15929-8bc0-5ac4-a959-98f12ffd0d0e"
+Command line defined: "PRODUCT_NAME=BoaVida-XLSX"
+Command line defined: "PRODUCT_FILENAME=BoaVida-XLSX"
+Command line defined: "APP_FILENAME=BoaVida-XLSX"
+Command line defined: "APP_DESCRIPTION=Desktop application for BoaVida"
+Command line defined: "VERSION=1.0.0"
+Command line defined: "PROJECT_DIR=/home/ebraimsambo/DEV/BOAVIDA/DESKTOP/electron"
+Command line defined: "BUILD_RESOURCES_DIR=/home/ebraimsambo/DEV/BOAVIDA/DESKTOP/electron/build"
+Command line defined: "APP_PACKAGE_NAME=electron"
+Command line defined: "MUI_ICON=/home/ebraimsambo/DEV/BOAVIDA/DESKTOP/electron/assets/images/logo.png"
+Command line defined: "MUI_UNICON=/home/ebraimsambo/DEV/BOAVIDA/DESKTOP/electron/assets/images/logo.png"
+Command line defined: "APP_64=/home/ebraimsambo/DEV/BOAVIDA/DESKTOP/electron/dist-win/electron-1.0.0-x64.nsis.7z"
+Command line defined: "APP_64_NAME=electron-1.0.0-x64.nsis.7z"
+Command line defined: "APP_64_HASH=9C4759A03AFEB93160025CC9E9918E52DB43E683F6A7879EE0AAE79C8998106F6254B02A0BF6CE64D0E63684960A2BAA114E46390B832688716C4AD860846422"
+Command line defined: "APP_64_UNPACKED_SIZE=341276"
+Command line defined: "APP_INSTALLER_STORE_FILE=electron-updater\installer.exe"
+Command line defined: "COMPRESSION_METHOD=7z"
+Command line defined: "MULTIUSER_INSTALLMODE_ALLOW_ELEVATION"
+Command line defined: "INSTALL_MODE_PER_ALL_USERS_REQUIRED"
+Command line defined: "allowToChangeInstallationDirectory"
+Command line defined: "SHORTCUT_NAME=BoaVida XLSX"
+Command line defined: "UNINSTALL_DISPLAY_NAME=BoaVida-XLSX 1.0.0"
+Command line defined: "RECREATE_DESKTOP_SHORTCUT"
+Command line defined: "MUI_WELCOMEFINISHPAGE_BITMAP=${NSISDIR}\Contrib\Graphics\Wizard\nsis3-metro.bmp"
+Command line defined: "MUI_UNWELCOMEFINISHPAGE_BITMAP=${NSISDIR}\Contrib\Graphics\Wizard\nsis3-metro.bmp"
+Command line defined: "UNINSTALLER_ICON=/home/ebraimsambo/DEV/BOAVIDA/DESKTOP/electron/assets/images/logo.png"
+Command line defined: "ESTIMATED_SIZE=341275"
+Command line defined: "COMPRESS=auto"
+Command line defined: "BUILD_UNINSTALLER"
+Command line defined: "UNINSTALLER_OUT_FILE=Z:\home\ebraimsambo\DEV\BOAVIDA\DESKTOP\electron\dist-win\__uninstaller-nsis-electron.exe"
+Processing config: /home/ebraimsambo/.cache/electron-builder/nsis/nsis-3.0.4.1/nsisconf.nsh
+Processing script file: "<stdin>" (UTF8)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     Error output:
+Error while loading icon from "/home/ebraimsambo/DEV/BOAVIDA/DESKTOP/electron/assets/images/logo.png": invalid icon file
+Error in macro MUI_INTERFACE on macroline 87
+Error in macro MUI_UNPAGE_INIT on macroline 7
+Error in macro MUI_UNPAGE_WELCOME on macroline 5
+!include: error in script: "assistedInstaller.nsh" on line 70
+Error in script "<stdin>" on line 110 -- aborting creation process
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         at ChildProcess.<anonymous> (/home/ebraimsambo/DEV/BOAVIDA/DESKTOP/electron/node_modules/.pnpm/builder-util@26.0.11/node_modules/builder-util/src/util.ts:259:14)
+    at Object.onceWrapper (node:events:623:26)
+    at ChildProcess.emit (node:events:508:28)
+    at maybeClose (node:internal/child_process:1101:16)
+    at Process.ChildProcess._handle.onexit (node:internal/child_process:305:5)
+ ELIFECYCLE  Command failed with exit code 1.

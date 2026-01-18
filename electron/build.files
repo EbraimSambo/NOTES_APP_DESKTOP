@@ -1,0 +1,10 @@
+"files": [
+  "dist/**/*",
+  "assets/**/*",
+  {
+    "from": "../renderer/out",
+    "to": "renderer",
+    "filter": ["**/*"]
+  },
+  "package.json"
+]

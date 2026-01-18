@@ -20,7 +20,6 @@ import { SortableNoteCard } from './SortableNoteCard';
 import { IconNotebook, IconLoader2 } from '@tabler/icons-react';
 import { Note } from '@/types/notes.core';
 import { NoteCard } from './NotesCard';
-import { Skeleton } from '@/components/ui/skeleton';
 import { useInfiniteScroll } from '@/hooks/notes/useInfiniteScroll.Hook';
 
 interface NotesListProps {

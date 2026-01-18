@@ -11,6 +11,7 @@ export const notesTable = sqliteTable("notes", {
   isPinned: text().notNull().default("false"),
   createdAt: text().notNull().$default(() => new Date().toISOString()),
   updatedAt: text().notNull().$default(() => new Date().toISOString()),
+  deletedAt: text(),
 });
 
 export const tagsTable = sqliteTable("tags", {

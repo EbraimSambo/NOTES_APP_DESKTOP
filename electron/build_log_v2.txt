@@ -1,0 +1,94 @@
+
+> electron@1.0.0 dist /home/ebraimsambo/DEV/BOAVIDA/DESKTOP/electron
+> npm run build && electron-builder --win
+
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
+
+> electron@1.0.0 build
+> cd ../renderer && npm run build && cd ../electron && tsc
+
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
+
+> renderer@0.1.0 build
+> next build
+
+   ▲ Next.js 15.5.9
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 3.4s
+   Linting and checking validity of types ...
+
+ ⚠ The Next.js plugin was not detected in your ESLint configuration. See https://nextjs.org/docs/app/api-reference/config/eslint#migrating-existing-config
+   Collecting page data ...
+   Generating static pages (0/6) ...
+   Generating static pages (1/6) 
+   Generating static pages (2/6) 
+   Generating static pages (4/6) 
+ ✓ Generating static pages (6/6)
+   Finalizing page optimization ...
+   Collecting build traces ...
+   Exporting (0/2) ...
+ ✓ Exporting (2/2)
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                     139 kB         249 kB
+├ ○ /_not-found                            995 B         103 kB
+└ ○ /files                               29.8 kB         140 kB
++ First Load JS shared by all             102 kB
+  ├ chunks/813-0abc324eea6685f1.js         46 kB
+  ├ chunks/cd088030-882da87fbf40793c.js  54.2 kB
+  └ other shared chunks (total)          1.93 kB
+
+
+○  (Static)  prerendered as static content
+
+  • electron-builder  version=26.0.12 os=6.17.12-300.fc43.x86_64
+  • loaded configuration  file=package.json ("build" field)
+  • executing @electron/rebuild  electronVersion=39.2.7 arch=x64 buildFromSource=false appDir=./
+  • installing native dependencies  arch=x64
+  • completed installing native dependencies
+  • packaging       platform=win32 arch=x64 electron=39.2.7 appOutDir=dist-win/win-unpacked
+(node:119733) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+  • updating asar integrity executable resource  executablePath=dist-win/win-unpacked/BoaVida-XLSX.exe
+  • signing with signtool.exe  path=dist-win/win-unpacked/BoaVida-XLSX.exe
+  • building        target=nsis file=dist-win/BoaVida-XLSX Setup 1.0.0.exe archs=x64 oneClick=false perMachine=false
+  • signing with signtool.exe  path=dist-win/win-unpacked/resources/elevate.exe
+  ⨯ /home/ebraimsambo/DEV/BOAVIDA/DESKTOP/electron/node_modules/.pnpm/app-builder-bin@5.0.0-alpha.12/node_modules/app-builder-bin/linux/x64/app-builder process failed ERR_ELECTRON_BUILDER_CANNOT_EXECUTE
+Exit code:
+null  failedTask=build stackTrace=Error: /home/ebraimsambo/DEV/BOAVIDA/DESKTOP/electron/node_modules/.pnpm/app-builder-bin@5.0.0-alpha.12/node_modules/app-builder-bin/linux/x64/app-builder process failed ERR_ELECTRON_BUILDER_CANNOT_EXECUTE
+Exit code:
+null
+    at ChildProcess.<anonymous> (/home/ebraimsambo/DEV/BOAVIDA/DESKTOP/electron/node_modules/.pnpm/builder-util@26.0.11/node_modules/builder-util/src/util.ts:259:14)
+    at Object.onceWrapper (node:events:623:26)
+    at ChildProcess.emit (node:events:508:28)
+    at maybeClose (node:internal/child_process:1101:16)
+    at Process.ChildProcess._handle.onexit (node:internal/child_process:305:5)
+ ELIFECYCLE  Command failed with exit code 1.
+
+  #  Node.js[119722]: void node::ResetStdio() at ../src/node.cc:702
+  #  Assertion failed: !(err != 0) || (err == -1 && (*__errno_location ()) == 1)
+
+----- Native stack trace -----
+
+ 1: 0xad2170 node::Abort() [/home/ebraimsambo/.local/share/pnpm/.tools/pnpm-exe/10.26.2/pnpm]
+ 2: 0xad21ee  [/home/ebraimsambo/.local/share/pnpm/.tools/pnpm-exe/10.26.2/pnpm]
+ 3: 0xa8fc90  [/home/ebraimsambo/.local/share/pnpm/.tools/pnpm-exe/10.26.2/pnpm]
+ 4: 0x7fd2432299e1  [/lib64/libc.so.6]
+ 5: 0x7fd243229abe  [/lib64/libc.so.6]
+ 6: 0xa101ef node::DefaultProcessExitHandlerInternal(node::Environment*, node::ExitCode) [/home/ebraimsambo/.local/share/pnpm/.tools/pnpm-exe/10.26.2/pnpm]
+ 7: 0xa5ac57 node::Environment::Exit(node::ExitCode) [/home/ebraimsambo/.local/share/pnpm/.tools/pnpm-exe/10.26.2/pnpm]
+ 8: 0x15c4b8e v8::internal::FunctionCallbackArguments::Call(v8::internal::CallHandlerInfo) [/home/ebraimsambo/.local/share/pnpm/.tools/pnpm-exe/10.26.2/pnpm]
+ 9: 0x15c53cd  [/home/ebraimsambo/.local/share/pnpm/.tools/pnpm-exe/10.26.2/pnpm]
+10: 0x15c5895 v8::internal::Builtin_HandleApiCall(int, unsigned long*, v8::internal::Isolate*) [/home/ebraimsambo/.local/share/pnpm/.tools/pnpm-exe/10.26.2/pnpm]
+11: 0x1fa3df6  [/home/ebraimsambo/.local/share/pnpm/.tools/pnpm-exe/10.26.2/pnpm]
+
+  #  Node.js[119722]: void node::ResetStdio() at ../src/node.cc:702
+  #  Assertion failed: !(err != 0) || (err == -1 && (*__errno_location ()) == 1)
+
+----- Native stack trace -----
+

@@ -40,7 +40,7 @@ export function CreateNoteModal() {
     try {
       await submitCreateNote({
         note: {
-          title: title || 'Untitled',
+          title: title || 'Sem título',
           content,
           tags: tags.map(tag => ({ id: '', name: tag })),
         }
@@ -58,7 +58,7 @@ export function CreateNoteModal() {
     <Dialog open={isModalOpen} onOpenChange={closeModal}>
       <DialogContent className="max-w-2xl glass-strong border-border/50 p-0 overflow-hidden">
         <DialogHeader className="p-6 pb-0">
-          <DialogTitle className="sr-only">Create New Note</DialogTitle>
+          <DialogTitle className="sr-only">Criar nova nota</DialogTitle>
         </DialogHeader>
 
         <motion.div
@@ -72,7 +72,7 @@ export function CreateNoteModal() {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Note title..."
+              placeholder="Título da nota..."
               className="w-full text-2xl font-bold bg-transparent border-none outline-none placeholder:text-muted-foreground/50"
               autoFocus
             />
@@ -83,7 +83,7 @@ export function CreateNoteModal() {
             <textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="Write your note in Markdown..."
+              placeholder="Escreva sua nota em Markdown..."
               rows={12}
               className="w-full bg-transparent border-none outline-none resize-none text-foreground/90 placeholder:text-muted-foreground/50 font-mono text-sm leading-relaxed"
             />
@@ -115,7 +115,7 @@ export function CreateNoteModal() {
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Add tag..."
+                placeholder="Adicionar tag..."
                 className="flex-1 min-w-[100px] bg-transparent border-none outline-none text-sm placeholder:text-muted-foreground/50"
               />
             </div>
@@ -127,7 +127,7 @@ export function CreateNoteModal() {
               onClick={closeModal}
               className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
-              Cancel
+              Cancelar
             </button>
             <motion.button
               onClick={handleCreate}
