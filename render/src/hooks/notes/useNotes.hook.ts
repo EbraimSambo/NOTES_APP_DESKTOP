@@ -1,5 +1,5 @@
 import { Note } from '@/types/notes.core';
-import { useState } from 'react';
+import React  from 'react';
 
 const initialNotes: Note[] = [
   {
@@ -94,8 +94,8 @@ Remember to focus on **user experience** first!`,
 ];
 
 export function useNotes() {
-  const [notes, setNotes] = useState<Note[]>(initialNotes);
-  const [selectedNote, setSelectedNote] = useState<Note | null>(null);
+  const [notes, setNotes] = React.useState<Note[]>(initialNotes);
+  const [selectedNote, setSelectedNote] = React.useState<Note | null>(null);
 
   const createNote = (note: Omit<Note, 'id' | 'createdAt' | 'updatedAt'>) => {
     const newNote: Note = {

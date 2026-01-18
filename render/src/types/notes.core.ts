@@ -1,3 +1,8 @@
+export interface Tag {
+  id: string;
+  name: string;
+}
+
 export interface Note {
   id: string;
   title: string;
@@ -6,7 +11,7 @@ export interface Note {
   updatedAt: Date;
   color?: string;
   isPinned?: boolean;
-  tags?: string[];
+  tags?: Tag[];
 }
 
 export type NoteColor = 

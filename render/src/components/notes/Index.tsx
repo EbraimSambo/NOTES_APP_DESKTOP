@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { NotesList } from '@/components/notes/NotesList';
@@ -7,26 +7,33 @@ import { NoteEditor } from '@/components/notes/NoteEditor';
 import { CreateNoteModal } from '@/components/notes/CreateNoteModal';
 import { EmptyState } from './EmptyState';
 import { useNotes } from '@/hooks/notes/useNotes.hook';
-
+import { useGetNotes } from '@/hooks/notes/useGetNotes.Hook';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useCreateNote } from '@/hooks/notes/useCreateNote.Hook';
 const Index = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState('all');
   const {
-    notes,
     pinnedNotes,
     unpinnedNotes,
     selectedNote,
     setSelectedNote,
-    createNote,
     updateNote,
     deleteNote,
     togglePin,
     reorderNotes,
   } = useNotes();
-
+  const { notes, loading, error,refetch } = useGetNotes({})
+  const {note, submitCreateNote, loading: createLoading, error: createError} = useCreateNote();
   const filteredPinned = activeFilter === 'pinned' ? pinnedNotes : pinnedNotes;
   const filteredUnpinned = activeFilter === 'pinned' ? [] : unpinnedNotes;
   const totalCount = filteredPinned.length + filteredUnpinned.length;
+
+  React.useEffect(() => {
+    if (note) {
+      refetch();
+    }
+  }, [note, refetch]);
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background">
@@ -52,14 +59,21 @@ const Index = () => {
             {totalCount} {totalCount === 1 ? 'note' : 'notes'}
           </p>
         </header>
-        <NotesList
+        {loading && (
+          <div className="">
+            {Array.from({ length: 10 }).map((_, index) => (
+              <Skeleton key={index} className='h-20' />
+            ))}
+          </div>
+        )}
+        {notes && notes.length > 0 && <NotesList
           pinnedNotes={filteredPinned}
           unpinnedNotes={filteredUnpinned}
           selectedNote={selectedNote}
           onSelectNote={setSelectedNote}
           onTogglePin={togglePin}
           onReorder={reorderNotes}
-        />
+        />}
       </motion.div>
 
       {/* Editor/Viewer Panel */}
@@ -83,7 +97,8 @@ const Index = () => {
       <CreateNoteModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
-        onCreate={createNote}
+        onCreate={submitCreateNote}
+        isLoading={createLoading}
       />
     </div>
   );

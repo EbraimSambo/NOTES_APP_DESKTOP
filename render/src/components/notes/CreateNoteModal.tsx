@@ -7,15 +7,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Note } from '@/types/notes.core';
+import { Note, Tag } from '@/types/notes.core';
 
 interface CreateNoteModalProps {
   isOpen: boolean;
   onClose: () => void;
   onCreate: (note: Omit<Note, 'id' | 'createdAt' | 'updatedAt'>) => void;
+  isLoading: boolean;
 }
 
-export function CreateNoteModal({ isOpen, onClose, onCreate }: CreateNoteModalProps) {
+export function CreateNoteModal({ isOpen, onClose, onCreate, isLoading }: CreateNoteModalProps) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tagInput, setTagInput] = useState('');
@@ -43,7 +44,7 @@ export function CreateNoteModal({ isOpen, onClose, onCreate }: CreateNoteModalPr
     onCreate({
       title: title || 'Untitled',
       content,
-      tags,
+      tags: tags.map(tag => ({ id: '', name: tag })),
     });
     setTitle('');
     setContent('');
@@ -132,7 +133,7 @@ export function CreateNoteModal({ isOpen, onClose, onCreate }: CreateNoteModalPr
               whileTap={{ scale: 0.98 }}
               className="px-6 py-2 text-sm font-medium gradient-primary text-primary-foreground rounded-lg shadow-glow"
             >
-              Create Note
+              {isLoading ? 'Criando...' : 'Criar Nota'}
             </motion.button>
           </div>
         </motion.div>
