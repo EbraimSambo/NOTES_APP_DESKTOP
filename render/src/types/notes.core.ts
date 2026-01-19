@@ -13,6 +13,7 @@ export interface Note {
   color?: string;
   isPinned: boolean;
   tags?: Tag[];
+  deletedAt?: Date;
 }
 
 export type NoteColor = 

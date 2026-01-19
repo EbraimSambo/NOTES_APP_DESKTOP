@@ -1,3 +1,4 @@
+"use server";
 import { dbDriver } from "@/config/drizzle.db";
 import { notesTable } from "@/config/note.schema";
 import { Note } from "@/types/notes.core";

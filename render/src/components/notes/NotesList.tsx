@@ -83,7 +83,11 @@ export function NotesList({
 
   if (allNotes.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-full p-8 text-center">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex flex-col items-center justify-center h-full p-8 text-center"
+      >
         <div className="w-20 h-20 rounded-2xl bg-muted/50 flex items-center justify-center mb-4">
           <IconNotebook className="w-10 h-10 text-muted-foreground" />
         </div>
@@ -91,7 +95,7 @@ export function NotesList({
         <p className="text-sm text-muted-foreground">
           Crie sua primeira anotação para começar.
         </p>
-      </div>
+      </motion.div>
     );
   }
 
@@ -103,101 +107,124 @@ export function NotesList({
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
-        <AnimatePresence mode="popLayout">
-          {/* Pinned Notes */}
-          {pinnedNotes.length > 0 && (
-            <motion.section
-              key="pinned-section"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="space-y-3"
+        {/* Pinned Notes */}
+        {pinnedNotes.length > 0 && (
+          <section className="space-y-3">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground px-1">
+              Anotações fixadas
+            </h2>
+            <SortableContext
+              items={pinnedNotes.map((n) => n.id)}
+              strategy={verticalListSortingStrategy}
             >
-              <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground px-1">
-                Anotações fixadas
-              </h2>
-              <SortableContext
-                items={pinnedNotes.map((n) => n.id)}
-                strategy={verticalListSortingStrategy}
-              >
+              <AnimatePresence mode="popLayout" initial={false}>
                 <div className="grid gap-3">
                   {pinnedNotes.map((note) => (
-                    <SortableNoteCard
+                    <motion.div
                       key={note.id}
-                      note={note}
-                      isSelected={selectedNote?.id === note.id}
-                      onClick={() => onSelectNote(note)}
-                      onTogglePin={() => onTogglePin(note.id)}
-                    />
+                      layout
+                      initial={{ opacity: 0, scale: 0.8, y: -20 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.8, y: -20 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 500,
+                        damping: 30,
+                        mass: 1
+                      }}
+                    >
+                      <SortableNoteCard
+                        note={note}
+                        isSelected={selectedNote?.id === note.id}
+                        onClick={() => onSelectNote(note)}
+                        onTogglePin={() => onTogglePin(note.id)}
+                      />
+                    </motion.div>
                   ))}
                 </div>
-              </SortableContext>
-            </motion.section>
-          )}
+              </AnimatePresence>
+            </SortableContext>
+          </section>
+        )}
 
-          {/* Other Notes */}
-          {unpinnedNotes.length > 0 && (
-            <motion.section
-              key="unpinned-section"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="space-y-3"
+        {/* Other Notes */}
+        {unpinnedNotes.length > 0 && (
+          <section className="space-y-3">
+            {pinnedNotes.length > 0 && (
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground px-1">
+                Anotações
+              </h2>
+            )}
+            <SortableContext
+              items={unpinnedNotes.map((n) => n.id)}
+              strategy={verticalListSortingStrategy}
             >
-              {pinnedNotes.length > 0 && (
-                <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground px-1">
-                  Anotações
-                </h2>
-              )}
-              <SortableContext
-                items={unpinnedNotes.map((n) => n.id)}
-                strategy={verticalListSortingStrategy}
-              >
+              <AnimatePresence mode="popLayout" initial={false}>
                 <div className="grid gap-3">
                   {unpinnedNotes.map((note) => (
-                    <SortableNoteCard
+                    <motion.div
                       key={note.id}
-                      note={note}
-                      isSelected={selectedNote?.id === note.id}
-                      onClick={() => onSelectNote(note)}
-                      onTogglePin={() => onTogglePin(note.id)}
-                    />
+                      layout
+                      initial={{ opacity: 0, scale: 0.8, y: -20 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.8, y: -20 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 500,
+                        damping: 30,
+                        mass: 1
+                      }}
+                    >
+                      <SortableNoteCard
+                        note={note}
+                        isSelected={selectedNote?.id === note.id}
+                        onClick={() => onSelectNote(note)}
+                        onTogglePin={() => onTogglePin(note.id)}
+                      />
+                    </motion.div>
                   ))}
                 </div>
-              </SortableContext>
-            </motion.section>
-          )}
-          
-          {/* Loading More Indicator */}
-          {hasMore && (
-            <div 
-              key="loading-indicator"
-              ref={ref}
-              className="flex justify-center py-4"
-            >
-              {loadingMore ? (
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <IconLoader2 className="w-4 h-4 animate-spin" />
-                  Carregando mais notas...
-                </div>
-              ) : (
-                <div className="text-xs text-muted-foreground">
-                  Role para carregar mais
-                </div>
-              )}
-            </div>
-          )}
-        </AnimatePresence>
+              </AnimatePresence>
+            </SortableContext>
+          </section>
+        )}
+        
+        {/* Loading More Indicator */}
+        {hasMore && (
+          <motion.div 
+            ref={ref}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex justify-center py-4"
+          >
+            {loadingMore ? (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <IconLoader2 className="w-4 h-4 animate-spin" />
+                Carregando mais notas...
+              </div>
+            ) : (
+              <div className="text-xs text-muted-foreground">
+                Não ha mais notas para carregar
+              </div>
+            )}
+          </motion.div>
+        )}
 
         {/* Drag Overlay */}
         <DragOverlay>
           {activeNote ? (
-            <div className="opacity-90 rotate-2 scale-105">
+            <motion.div 
+              initial={{ scale: 1 }}
+              animate={{ scale: 1.05, rotate: 2 }}
+              className="opacity-90"
+            >
               <NoteCard
                 note={activeNote}
                 isSelected={false}
                 onClick={() => {}}
                 onTogglePin={() => {}}
               />
-            </div>
+            </motion.div>
           ) : null}
         </DragOverlay>
       </DndContext>

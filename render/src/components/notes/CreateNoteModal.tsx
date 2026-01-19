@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { IconX, IconHash } from '@tabler/icons-react';
 import {
@@ -7,8 +7,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Note, Tag } from '@/types/notes.core';
-import { CreateNote } from '@/actions/create-notes';
 import { useCreateModal } from '@/hooks/notes/useCreateModal.Hook';
 
 export function CreateNoteModal() {
@@ -17,6 +15,19 @@ export function CreateNoteModal() {
   const [content, setContent] = useState('');
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState<string[]>([]);
+
+  // Reset form when modal closes
+  useEffect(() => {
+    if (!isModalOpen) {
+      const timer = setTimeout(() => {
+        setTitle('');
+        setContent('');
+        setTags([]);
+        setTagInput('');
+      }, 200); // Wait for modal close animation
+      return () => clearTimeout(timer);
+    }
+  }, [isModalOpen]);
 
   const handleAddTag = () => {
     if (tagInput.trim() && !tags.includes(tagInput.trim())) {
@@ -37,20 +48,20 @@ export function CreateNoteModal() {
   };
 
   const handleCreate = async () => {
+    if (createLoading) return;
+    
     try {
       await submitCreateNote({
         note: {
           title: title || 'Sem título',
           content,
           tags: tags.map(tag => ({ id: '', name: tag })),
+          isPinned: false,
         }
       });
-      setTitle('');
-      setContent('');
-      setTags([]);
       closeModal();
     } catch (error) {
-      // Error is handled by the hook
+      console.error('Failed to create note:', error);
     }
   };
 
@@ -125,15 +136,17 @@ export function CreateNoteModal() {
           <div className="flex justify-end gap-3 p-6 pt-4 border-t border-border/50 bg-muted/20">
             <button
               onClick={closeModal}
-              className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              disabled={createLoading}
+              className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
             >
               Cancelar
             </button>
             <motion.button
               onClick={handleCreate}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="px-6 py-2 text-sm font-medium gradient-primary text-primary-foreground rounded-lg shadow-glow"
+              disabled={createLoading}
+              whileHover={{ scale: createLoading ? 1 : 1.02 }}
+              whileTap={{ scale: createLoading ? 1 : 0.98 }}
+              className="px-6 py-2 text-sm font-medium gradient-primary text-primary-foreground rounded-lg shadow-glow disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {createLoading ? 'Criando...' : 'Criar Nota'}
             </motion.button>

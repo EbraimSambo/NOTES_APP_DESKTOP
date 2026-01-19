@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -25,25 +25,70 @@ export function NoteEditor() {
   const [title, setTitle] = useState(selectedNote.title);
   const [content, setContent] = useState(selectedNote.content);
 
+  // Ref para armazenar valores iniciais da nota selecionada
+  const initialValuesRef = useRef({ title: selectedNote.title, content: selectedNote.content });
+  
+  // Atualizar valores quando a nota selecionada mudar
   useEffect(() => {
     setTitle(selectedNote.title);
     setContent(selectedNote.content);
-  }, [selectedNote]);
+    initialValuesRef.current = { title: selectedNote.title, content: selectedNote.content };
+  }, [selectedNote.id]); // Apenas quando o ID da nota mudar
 
-  const [debouncedTitle] = useDebounce(title, 500);
-  const [debouncedContent] = useDebounce(content, 500);
+  const [debouncedTitle] = useDebounce(title, 1000);
+  const [debouncedContent] = useDebounce(content, 1000);
+  
+  // Ref para rastrear se há uma atualização em andamento
+  const isUpdatingRef = useRef(false);
+  const updateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Efeito para salvar automaticamente com debounce
   useEffect(() => {
-    if (debouncedTitle !== selectedNote.title) {
-      updateNote(selectedNote.id, { title: debouncedTitle });
-    }
-  }, [debouncedTitle, selectedNote.id, selectedNote.title, updateNote]);
+    // Se já está atualizando, ignorar
+    if (isUpdatingRef.current) return;
+    
+    // Verificar se houve mudanças reais comparando com os valores iniciais
+    const hasTitleChanged = debouncedTitle !== initialValuesRef.current.title && debouncedTitle.trim() !== '';
+    const hasContentChanged = debouncedContent !== initialValuesRef.current.content;
+    
+    if (!hasTitleChanged && !hasContentChanged) return;
+    
+    // Marcar como atualizando
+    isUpdatingRef.current = true;
+    
+    const updates: any = {};
+    if (hasTitleChanged) updates.title = debouncedTitle;
+    if (hasContentChanged) updates.content = debouncedContent;
+    
+    updateNote(selectedNote.id, updates)
+      .then(() => {
+        // Atualizar os valores iniciais após sucesso
+        if (hasTitleChanged) initialValuesRef.current.title = debouncedTitle;
+        if (hasContentChanged) initialValuesRef.current.content = debouncedContent;
+      })
+      .catch((error) => {
+        console.error('Update failed:', error);
+        // Reverter para valores anteriores em caso de erro
+        setTitle(initialValuesRef.current.title);
+        setContent(initialValuesRef.current.content);
+      })
+      .finally(() => {
+        // Aguardar um pouco antes de permitir nova atualização
+        updateTimeoutRef.current = setTimeout(() => {
+          isUpdatingRef.current = false;
+        }, 100);
+      });
+  }, [debouncedTitle, debouncedContent, selectedNote.id, updateNote]);
 
+  // Limpar timeout ao desmontar
   useEffect(() => {
-    if (debouncedContent !== selectedNote.content) {
-      updateNote(selectedNote.id, { content: debouncedContent });
-    }
-  }, [debouncedContent, selectedNote.id, selectedNote.content, updateNote]);
+    return () => {
+      if (updateTimeoutRef.current) {
+        clearTimeout(updateTimeoutRef.current);
+      }
+      isUpdatingRef.current = false;
+    };
+  }, []);
 
   const handleTitleChange = (newTitle: string) => {
     setTitle(newTitle);
