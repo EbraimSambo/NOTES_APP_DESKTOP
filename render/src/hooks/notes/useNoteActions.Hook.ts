@@ -38,16 +38,30 @@ export function useNoteActions() {
     };
 
     const togglePinNote = async (id: string) => {
+        console.log('togglePinNote called with:', { id });
         const note = notes.find(n => n.id === id);
-        if (!note) return;
+        console.log('Found note:', note);
+        
+        if (!note) {
+            console.log('Note not found, returning');
+            return;
+        }
+
+        const newPinState = !note.isPinned;
+        console.log('Toggling pin from', note.isPinned, 'to', newPinState);
 
         try {
-            const updatedNote = await updateNote({ id, updates: { isPinned: !note.isPinned } });
-            setNotes(prevNotes => 
-                prevNotes.map(n => 
+            const updatedNote = await updateNote({ id, updates: { isPinned: newPinState } });
+            console.log('Update successful, updatedNote:', updatedNote);
+            
+            setNotes(prevNotes => {
+                const newNotes = prevNotes.map(n => 
                     n.id === id ? { ...n, ...updatedNote } : n
-                )
-            );
+                );
+                console.log('Updated notes array:', newNotes);
+                return newNotes;
+            });
+            
             return updatedNote;
         } catch (error) {
             console.error('Failed to toggle pin:', error);

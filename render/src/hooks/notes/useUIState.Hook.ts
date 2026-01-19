@@ -1,9 +1,10 @@
 import { useAtom } from 'jotai';
-import { selectedNoteAtom, activeFilterAtom, createModalOpenAtom, filteredNotesAtom } from '@/store/atoms';
+import { selectedNoteAtom, activeFilterAtom, createModalOpenAtom, filteredNotesAtom, searchQueryAtom } from '@/store/atoms';
 
 export function useUIState() {
   const [selectedNote, setSelectedNote] = useAtom(selectedNoteAtom);
   const [activeFilter, setActiveFilter] = useAtom(activeFilterAtom);
+  const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom);
   const [isCreateModalOpen, setIsCreateModalOpen] = useAtom(createModalOpenAtom);
   const { pinned: filteredPinned, unpinned: filteredUnpinned, totalCount } = useAtom(filteredNotesAtom)[0];
 
@@ -17,6 +18,7 @@ export function useUIState() {
     // Estado
     selectedNote,
     activeFilter,
+    searchQuery,
     isCreateModalOpen,
     filteredPinned,
     filteredUnpinned,
@@ -28,6 +30,7 @@ export function useUIState() {
     selectNote,
     clearSelectedNote,
     setFilter,
+    setSearchQuery,
     setSelectedNote
   };
 }

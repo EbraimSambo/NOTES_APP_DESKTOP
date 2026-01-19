@@ -15,6 +15,8 @@ interface SidebarProps {
   activeFilter: "all" | "pinned" | "deleted" | "trash";
   onFilterChange: (filter: "all" | "pinned" | "deleted" | "trash") => void;
   notesCount: number;
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
 }
 
 const menuItems = [
@@ -23,7 +25,7 @@ const menuItems = [
   { id: 'trash' as const, icon: IconTrash, label: 'Lixeira' },
 ];
 
-export function Sidebar({ onNewNote, activeFilter, onFilterChange, notesCount }: SidebarProps) {
+export function Sidebar({ onNewNote, activeFilter, onFilterChange, notesCount, searchQuery, onSearchChange }: SidebarProps) {
   return (
     <motion.aside
       initial={{ x: -20, opacity: 0 }}
@@ -50,6 +52,8 @@ export function Sidebar({ onNewNote, activeFilter, onFilterChange, notesCount }:
           <input
             type="text"
             placeholder="Procurar por notas..."
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 bg-muted/50 border border-border/50 rounded-lg text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all"
           />
         </div>
@@ -91,7 +95,7 @@ export function Sidebar({ onNewNote, activeFilter, onFilterChange, notesCount }:
       <div className="p-4 border-t border-border/50">
         <button className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-accent/50 transition-all">
           <IconSettings className="w-5 h-5" />
-          <span>Settings</span>
+          <span>Configurações</span>
         </button>
       </div>
     </motion.aside>

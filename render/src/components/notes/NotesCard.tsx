@@ -63,6 +63,7 @@ export function NoteCard({ note, isSelected, onClick, onTogglePin, onRestore }: 
         <button
           onClick={(e) => {
             e.stopPropagation();
+            console.log('Pin button clicked, note.isPinned:', note.isPinned);
             onTogglePin();
           }}
           className="p-1.5 rounded-lg hover:bg-accent transition-colors"

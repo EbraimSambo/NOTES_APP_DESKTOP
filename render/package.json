@@ -1,12 +1,13 @@
 {
-  "name": "render2",
+  "name": "render",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:push": "drizzle-kit push"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -30,6 +31,7 @@
     "react-intersection-observer": "^10.0.2",
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1",
+    "sqlocal": "^0.16.0",
     "tailwind-merge": "^3.4.0",
     "use-debounce": "^10.1.0",
     "uuid": "^13.0.0"

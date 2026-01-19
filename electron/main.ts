@@ -1,10 +1,34 @@
 import { app, BrowserWindow, protocol, net, Menu } from 'electron'
 import path from 'path'
 import { pathToFileURL } from 'url'
+import { execSync } from 'child_process' // 👈 Adicionado para rodar comandos
 
 const isDev = !app.isPackaged
 
-// Register protocol as standard and secure
+// --- NOVA FUNÇÃO PARA GARANTIR A DB ---
+function setupDatabase() {
+    try {
+        console.log('🔄 Verificando banco de dados...')
+        
+        // No dev, o render está em ../render
+        // No prod, você precisará ajustar o caminho conforme seu build
+        const renderPath = isDev 
+            ? path.join(__dirname, '../../render') 
+            : path.join(process.resourcesPath, 'render');
+
+        // Executa o push do drizzle de forma síncrona antes de abrir a janela
+        execSync('npm run db:push', {
+            cwd: renderPath,
+            stdio: 'inherit', // Mostra o log no terminal do electron
+        });
+        
+        console.log('✅ Banco de dados pronto!');
+    } catch (error) {
+        console.error('❌ Erro ao inicializar banco de dados:', error);
+        // Opcional: Impedir o app de abrir se a DB falhar
+    }
+}
+
 protocol.registerSchemesAsPrivileged([
     {
         scheme: 'app',
@@ -27,8 +51,13 @@ function createWindow() {
         minHeight: 800,
         title: 'Notes',
         icon: path.join(__dirname, '../assets/images/logo.png'),
-        show: false, // 👈 IMPORTANTE
-        webPreferences: {}
+        show: false,
+        webPreferences: {
+            // Recomendo ativar se for usar node no renderer, 
+            // mas mantenha desativado por segurança se não precisar
+            nodeIntegration: false, 
+            contextIsolation: true
+        }
     })
 
     if (isDev) {
@@ -42,27 +71,21 @@ function createWindow() {
     })
 }
 
-app.whenReady().then(() => {
-    // Register protocol to handle Next.js absolute paths (/_next/...)
+app.whenReady().then(async () => {
+    // 1. Garante a DB primeiro
+    setupDatabase()
+
+    // 2. Registra o protocolo
     protocol.handle('app', (request) => {
         let url = request.url.slice('app://'.length)
+        if (url.startsWith('./')) url = url.slice(2)
+        if (!url || url === '/') url = 'index.html'
 
-        // Remove ./ if present at the start
-        if (url.startsWith('./')) {
-            url = url.slice(2)
-        }
-
-        // If URL is empty or just /, load index.html
-        if (!url || url === '/') {
-            url = 'index.html'
-        }
-
-        // Create the absolute path to the file in the render folder
         const filePath = path.join(__dirname, '../render', url)
-
         return net.fetch(pathToFileURL(filePath).toString())
     })
 
+    // 3. Abre a janela
     createWindow()
 })
 

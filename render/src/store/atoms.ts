@@ -27,6 +27,9 @@ export const selectedNoteAtom = atom<Note | null>(null);
 // Átomo para o filtro ativo
 export const activeFilterAtom = atom<"all" | "pinned" | "deleted" | "trash">('all');
 
+// Átomo para o texto de busca
+export const searchQueryAtom = atom<string>('');
+
 // Átomo para controlar se o modal de criação está aberto
 export const createModalOpenAtom = atom<boolean>(false);
 
@@ -55,20 +58,33 @@ export const deletedNotesAtom = atom(
 export const filteredNotesAtom = atom(
   (get) => {
     const activeFilter = get(activeFilterAtom);
+    const searchQuery = get(searchQueryAtom);
     const pinnedNotes = get(pinnedNotesAtom);
     const unpinnedNotes = get(unpinnedNotesAtom);
     const deletedNotes = get(deletedNotesAtom);
     
+    // Função para filtrar por texto
+    const filterBySearch = (notes: Note[]) => {
+      if (!searchQuery.trim()) return notes;
+      
+      const query = searchQuery.toLowerCase();
+      return notes.filter(note => 
+        note.title?.toLowerCase().includes(query) ||
+        note.content?.toLowerCase().includes(query)
+      );
+    };
+    
     if (activeFilter === 'trash') {
+      const filteredDeleted = filterBySearch(deletedNotes);
       return {
         pinned: [],
-        unpinned: deletedNotes,
-        totalCount: deletedNotes.length
+        unpinned: filteredDeleted,
+        totalCount: filteredDeleted.length
       };
     }
     
-    const filteredPinned = activeFilter === 'pinned' ? pinnedNotes : pinnedNotes;
-    const filteredUnpinned = activeFilter === 'pinned' ? [] : unpinnedNotes;
+    const filteredPinned = filterBySearch(activeFilter === 'pinned' ? pinnedNotes : pinnedNotes);
+    const filteredUnpinned = filterBySearch(activeFilter === 'pinned' ? [] : unpinnedNotes);
     
     return {
       pinned: filteredPinned,

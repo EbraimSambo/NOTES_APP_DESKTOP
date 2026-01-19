@@ -15,12 +15,14 @@ const Index = () => {
   const { 
     selectedNote, 
     activeFilter, 
+    searchQuery,
     filteredPinned, 
     filteredUnpinned, 
     totalCount,
     openCreateModal,
     selectNote,
-    setFilter
+    setFilter,
+    setSearchQuery
   } = useUIState();
   const { loading, reorderNotes, hasMore, loadingMore, loadMore } = useGetNotes({ 
     isPinned: activeFilter === 'pinned', 
@@ -36,6 +38,8 @@ const Index = () => {
         activeFilter={activeFilter}
         onFilterChange={setFilter}
         notesCount={totalCount}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
       />
 
       {/* Notes List Panel */}

@@ -1,7 +1,7 @@
 {
   "name": "electron",
-  "version": "1.2.1",
-  "description": "Desktop application for BoaVida",
+  "version": "1.0.0",
+  "description": "Desktop application for QuickNotes",
   "main": "dist/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -15,8 +15,8 @@
     "clean": "rimraf dist dist-linux"
   },
   "build": {
-    "appId": "com.boavida.desktop",
-    "productName": "BoaVida-XLSX",
+    "appId": "com.quick-notes.desktop",
+    "productName": "QuickNotes",
     "directories": {
       "output": "dist"
     },

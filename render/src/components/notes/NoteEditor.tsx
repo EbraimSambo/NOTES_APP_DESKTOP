@@ -130,7 +130,10 @@ export function NoteEditor() {
 
         <div className="flex items-center gap-2">
           <button
-            onClick={() => togglePin(selectedNote.id)}
+            onClick={() => {
+              console.log('Editor pin button clicked, note.isPinned:', selectedNote.isPinned);
+              togglePin(selectedNote.id);
+            }}
             className={`p-2 rounded-lg transition-colors ${
               selectedNote.isPinned
                 ? 'bg-primary/10 text-primary'
