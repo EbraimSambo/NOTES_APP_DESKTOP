@@ -8,9 +8,10 @@ interface GetNotesParams {
     page?: number;
     limit?: number;
     reset?: boolean;
+    isPinned?: boolean;
 }
 
-export function useGetNotes({ page = 1, limit = 10, reset = false }: GetNotesParams = {}) {
+export function useGetNotes({ page = 1, limit = 10, reset = false, isPinned }: GetNotesParams = {}) {
     const [notes, setNotes] = useAtom(notesAtom);
     const [loading, setLoading] = useAtom(notesLoadingAtom);
     const [error, setError] = useAtom(notesErrorAtom);
@@ -26,7 +27,7 @@ export function useGetNotes({ page = 1, limit = 10, reset = false }: GetNotesPar
                 setError(null);
             }
             
-            const notesServer = await getNotes({ page: pageNum, limit });
+            const notesServer = await getNotes({ page: pageNum, limit, isPinned });
             
             if (reset || pageNum === 1) {
                 setNotes(notesServer.notes as unknown as Note[]);
@@ -69,8 +70,8 @@ export function useGetNotes({ page = 1, limit = 10, reset = false }: GetNotesPar
 
     const reorderNotes = (activeId: string, overId: string) => {
         setNotes(prevNotes => {
-            const oldIndex = prevNotes.findIndex(note => note.id === activeId);
-            const newIndex = prevNotes.findIndex(note => note.id === overId);
+            const oldIndex = prevNotes.findIndex(note => note.orderId === parseInt(activeId));
+            const newIndex = prevNotes.findIndex(note => note.orderId === parseInt(overId));
             
             if (oldIndex === -1 || newIndex === -1) return prevNotes;
             

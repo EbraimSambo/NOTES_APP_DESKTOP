@@ -22,7 +22,7 @@ const Index = () => {
     selectNote,
     setFilter
   } = useUIState();
-  const { loading, reorderNotes, hasMore, loadingMore, loadMore } = useGetNotes({});
+  const { loading, reorderNotes, hasMore, loadingMore, loadMore } = useGetNotes({ isPinned: activeFilter === 'pinned' });
   const { togglePin } = useNoteActions();
 
   return (
