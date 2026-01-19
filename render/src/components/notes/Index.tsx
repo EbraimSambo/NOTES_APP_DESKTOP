@@ -56,7 +56,7 @@ const Index = () => {
             ))}
           </div>
         )}
-        {totalCount > 0 && <NotesList
+        {!loading && <NotesList
           pinnedNotes={filteredPinned}
           unpinnedNotes={filteredUnpinned}
           selectedNote={selectedNote}

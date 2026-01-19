@@ -38,12 +38,12 @@ export const createErrorAtom = atom<string | null>(null);
 
 // Átomo derivado para notas fixadas
 export const pinnedNotesAtom = atom(
-  (get) => get(notesAtom).filter(note => note.isPinned ?? false)
+  (get) => get(notesAtom).filter(note => (note.isPinned ?? false) && !note.deletedAt)
 );
 
 // Átomo derivado para notas não fixadas
 export const unpinnedNotesAtom = atom(
-  (get) => get(notesAtom).filter(note => !note.isPinned)
+  (get) => get(notesAtom).filter(note => !note.isPinned && !note.deletedAt)
 );
 
 // Átomo derivado para notas filtradas

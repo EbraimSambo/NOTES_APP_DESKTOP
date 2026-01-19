@@ -32,6 +32,10 @@ export async function updateNote({ id, updates }: UpdateNote): Promise<Note> {
     updateData.isPinned = updates.isPinned ? 'true' : 'false';
   }
 
+  if (updates.deletedAt !== undefined) {
+    updateData.deletedAt = updates.deletedAt ? updates.deletedAt.toISOString() : null;
+  }
+
   console.log('Final updateData:', updateData);
 
   try {

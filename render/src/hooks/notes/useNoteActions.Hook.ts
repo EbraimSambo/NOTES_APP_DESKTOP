@@ -2,6 +2,7 @@ import { useAtom } from 'jotai';
 import { notesAtom } from '@/store/atoms';
 import { Note } from '@/types/notes.core';
 import { updateNote } from '@/actions/update-notes';
+import { deleteNote } from '@/actions/delete-note';
 
 export function useNoteActions() {
     const [notes, setNotes] = useAtom(notesAtom);
@@ -23,9 +24,12 @@ export function useNoteActions() {
 
     const deleteNoteById = async (id: string) => {
         try {
-            // Implementar deleteNote action quando disponível
-            // await deleteNote(id);
-            setNotes(prevNotes => prevNotes.filter(note => note.id !== id));
+            await deleteNote(id);
+            setNotes(prevNotes => 
+                prevNotes.map(note => 
+                    note.id === id ? { ...note, deletedAt: new Date() } : note
+                )
+            );
         } catch (error) {
             console.error('Failed to delete note:', error);
             throw error;
