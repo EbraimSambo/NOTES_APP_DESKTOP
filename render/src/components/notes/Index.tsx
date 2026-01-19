@@ -22,8 +22,11 @@ const Index = () => {
     selectNote,
     setFilter
   } = useUIState();
-  const { loading, reorderNotes, hasMore, loadingMore, loadMore } = useGetNotes({ isPinned: activeFilter === 'pinned' });
-  const { togglePin } = useNoteActions();
+  const { loading, reorderNotes, hasMore, loadingMore, loadMore } = useGetNotes({ 
+    isPinned: activeFilter === 'pinned', 
+    isDeleted: activeFilter === 'trash' 
+  });
+  const { togglePin, restoreNote } = useNoteActions();
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background">
@@ -43,10 +46,11 @@ const Index = () => {
       >
         <header className="p-4 border-b border-border/50">
           <h2 className="text-lg font-semibold text-foreground">
-            {activeFilter === 'pinned' ? 'Anotações fixadas' : 'Todas as notas'}
+            {activeFilter === 'pinned' ? 'Anotações fixadas' : 
+             activeFilter === 'trash' ? 'Lixeira' : 'Todas as notas'}
           </h2>
           <p className="text-sm text-muted-foreground">
-            {totalCount} {totalCount === 1 ? 'note' : 'notes'}
+            {totalCount} {totalCount === 1 ? 'nota' : 'notas'}
           </p>
         </header>
         {loading && (
@@ -66,6 +70,7 @@ const Index = () => {
           hasMore={hasMore}
           loadingMore={loadingMore}
           onLoadMore={loadMore}
+          onRestore={activeFilter === 'trash' ? restoreNote : undefined}
         />}
       </motion.div>
 

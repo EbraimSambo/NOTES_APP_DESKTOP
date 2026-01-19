@@ -32,6 +32,7 @@ interface NotesListProps {
   hasMore: boolean;
   loadingMore: boolean;
   onLoadMore: () => void;
+  onRestore?: (id: string) => void;
 }
 
 export function NotesList({
@@ -44,6 +45,7 @@ export function NotesList({
   hasMore,
   loadingMore,
   onLoadMore,
+  onRestore,
 }: NotesListProps) {
   const [activeNote, setActiveNote] = useState<Note | null>(null);
   const { ref } = useInfiniteScroll({
@@ -138,6 +140,7 @@ export function NotesList({
                         isSelected={selectedNote?.id === note.id}
                         onClick={() => onSelectNote(note)}
                         onTogglePin={() => onTogglePin(note.id)}
+                        onRestore={onRestore ? () => onRestore(note.id) : undefined}
                       />
                     </motion.div>
                   ))}
@@ -180,6 +183,7 @@ export function NotesList({
                         isSelected={selectedNote?.id === note.id}
                         onClick={() => onSelectNote(note)}
                         onTogglePin={() => onTogglePin(note.id)}
+                        onRestore={onRestore ? () => onRestore(note.id) : undefined}
                       />
                     </motion.div>
                   ))}
@@ -223,6 +227,7 @@ export function NotesList({
                 isSelected={false}
                 onClick={() => {}}
                 onTogglePin={() => {}}
+                onRestore={onRestore ? () => onRestore(activeNote.id) : undefined}
               />
             </motion.div>
           ) : null}

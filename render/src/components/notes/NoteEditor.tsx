@@ -10,6 +10,7 @@ import {
   IconPinFilled,
   IconCalendar,
   IconClock,
+  IconRestore,
 } from '@tabler/icons-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -17,7 +18,7 @@ import { useNoteEditor } from '@/hooks/notes/useNoteEditor.Hook';
 import { useDebounce } from 'use-debounce';
 
 export function NoteEditor() {
-  const { selectedNote, updateNote, deleteNote, togglePin, clearSelectedNote } = useNoteEditor();
+  const { selectedNote, updateNote, deleteNote, togglePin, restoreNote, clearSelectedNote } = useNoteEditor();
   
   if (!selectedNote) return null;
   
@@ -103,6 +104,11 @@ export function NoteEditor() {
     clearSelectedNote();
   };
 
+  const handleRestore = () => {
+    restoreNote(selectedNote.id);
+    clearSelectedNote();
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -152,10 +158,18 @@ export function NoteEditor() {
             )}
           </button>
           <button
-            onClick={() => handleDelete()}
-            className="p-2 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
+            onClick={() => selectedNote.deletedAt ? handleRestore() : handleDelete()}
+            className={`p-2 rounded-lg transition-colors ${
+              selectedNote.deletedAt 
+                ? 'hover:bg-green-500/10 text-green-600 hover:text-green-600' 
+                : 'hover:bg-destructive/10 text-muted-foreground hover:text-destructive'
+            }`}
           >
-            <IconTrash className="w-5 h-5" />
+            {selectedNote.deletedAt ? (
+              <IconRestore className="w-5 h-5" />
+            ) : (
+              <IconTrash className="w-5 h-5" />
+            )}
           </button>
         </div>
       </header>

@@ -3,6 +3,7 @@ import { notesAtom } from '@/store/atoms';
 import { Note } from '@/types/notes.core';
 import { updateNote } from '@/actions/update-notes';
 import { deleteNote } from '@/actions/delete-note';
+import { restoreNote } from '@/actions/restore-note';
 
 export function useNoteActions() {
     const [notes, setNotes] = useAtom(notesAtom);
@@ -54,9 +55,24 @@ export function useNoteActions() {
         }
     };
 
+    const restoreNoteById = async (id: string) => {
+        try {
+            await restoreNote(id);
+            setNotes(prevNotes => 
+                prevNotes.map(note => 
+                    note.id === id ? { ...note, deletedAt: undefined } : note
+                )
+            );
+        } catch (error) {
+            console.error('Failed to restore note:', error);
+            throw error;
+        }
+    };
+
     return {
         updateNote: updateNoteById,
         deleteNote: deleteNoteById,
-        togglePin: togglePinNote
+        togglePin: togglePinNote,
+        restoreNote: restoreNoteById
     };
 }

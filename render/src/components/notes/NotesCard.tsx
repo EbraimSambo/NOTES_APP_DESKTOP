@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { IconPin, IconPinFilled, IconDots } from '@tabler/icons-react';
+import { IconPin, IconPinFilled, IconDots, IconRestore } from '@tabler/icons-react';
 import { formatDistanceToNow } from 'date-fns';
 import { Note } from '@/types/notes.core';
 import { ptBR } from 'date-fns/locale';
@@ -8,9 +8,10 @@ interface NoteCardProps {
   isSelected: boolean;
   onClick: () => void;
   onTogglePin: () => void;
+  onRestore?: () => void;
 }
 
-export function NoteCard({ note, isSelected, onClick, onTogglePin }: NoteCardProps) {
+export function NoteCard({ note, isSelected, onClick, onTogglePin, onRestore }: NoteCardProps) {
   const getPreview = (content: string) => {
     // Strip markdown and get first 100 chars
     return content
@@ -48,6 +49,17 @@ export function NoteCard({ note, isSelected, onClick, onTogglePin }: NoteCardPro
 
       {/* Actions */}
       <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+        {note.deletedAt && onRestore && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onRestore();
+            }}
+            className="p-1.5 rounded-lg hover:bg-green-500/10 text-green-600 transition-colors"
+          >
+            <IconRestore className="w-4 h-4" />
+          </button>
+        )}
         <button
           onClick={(e) => {
             e.stopPropagation();

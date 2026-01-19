@@ -22,6 +22,7 @@ export async function createNote({note}:CreateNote): Promise<Note> {
             isPinned: note?.isPinned ? 'true' : 'false',
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
+            deletedAt: null
         }).returning();
         return {
             ...newNote,

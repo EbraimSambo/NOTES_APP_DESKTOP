@@ -8,9 +8,10 @@ interface SortableNoteCardProps {
   isSelected: boolean;
   onClick: () => void;
   onTogglePin: () => void;
+  onRestore?: () => void;
 }
 
-export function SortableNoteCard({ note, isSelected, onClick, onTogglePin }: SortableNoteCardProps) {
+export function SortableNoteCard({ note, isSelected, onClick, onTogglePin, onRestore }: SortableNoteCardProps) {
   const {
     attributes,
     listeners,
@@ -34,6 +35,7 @@ export function SortableNoteCard({ note, isSelected, onClick, onTogglePin }: Sor
         isSelected={isSelected}
         onClick={onClick}
         onTogglePin={onTogglePin}
+        onRestore={onRestore}
       />
     </div>
   );

@@ -11,7 +11,7 @@ export function useUIState() {
   const closeCreateModal = () => setIsCreateModalOpen(false);
   const selectNote = (note: any) => setSelectedNote(note);
   const clearSelectedNote = () => setSelectedNote(null);
-  const setFilter = (filter: string) => setActiveFilter(filter);
+  const setFilter = (filter: "all" | "pinned" | "deleted" | "trash") => setActiveFilter(filter);
 
   return {
     // Estado

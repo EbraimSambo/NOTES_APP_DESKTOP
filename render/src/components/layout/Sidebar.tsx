@@ -12,17 +12,15 @@ import {
 
 interface SidebarProps {
   onNewNote: () => void;
-  activeFilter: string;
-  onFilterChange: (filter: string) => void;
+  activeFilter: "all" | "pinned" | "deleted" | "trash";
+  onFilterChange: (filter: "all" | "pinned" | "deleted" | "trash") => void;
   notesCount: number;
 }
 
 const menuItems = [
-  { id: 'all', icon: IconNotes, label: 'Todas as Notas' },
-  { id: 'pinned', icon: IconStar, label: 'Fixadas' },
-  { id: 'folders', icon: IconFolder, label: 'Pastas' },
-  { id: 'tags', icon: IconTag, label: 'Tags' },
-  { id: 'trash', icon: IconTrash, label: 'Lixeira' },
+  { id: 'all' as const, icon: IconNotes, label: 'Todas as Notas' },
+  { id: 'pinned' as const, icon: IconStar, label: 'Fixadas' },
+  { id: 'trash' as const, icon: IconTrash, label: 'Lixeira' },
 ];
 
 export function Sidebar({ onNewNote, activeFilter, onFilterChange, notesCount }: SidebarProps) {

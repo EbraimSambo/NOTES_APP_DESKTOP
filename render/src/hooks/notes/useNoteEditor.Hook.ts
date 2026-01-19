@@ -4,7 +4,7 @@ import { useNoteActions } from '@/hooks/notes/useNoteActions.Hook';
 
 export function useNoteEditor() {
   const [selectedNote, setSelectedNote] = useAtom(selectedNoteAtom);
-  const { updateNote, deleteNote, togglePin } = useNoteActions();
+  const { updateNote, deleteNote, togglePin, restoreNote } = useNoteActions();
   
   if (!selectedNote) {
     return {
@@ -12,6 +12,7 @@ export function useNoteEditor() {
       updateNote,
       deleteNote,
       togglePin,
+      restoreNote,
       clearSelectedNote: () => {}
     };
   }
@@ -23,6 +24,7 @@ export function useNoteEditor() {
     updateNote,
     deleteNote,
     togglePin,
+    restoreNote,
     clearSelectedNote
   };
 }

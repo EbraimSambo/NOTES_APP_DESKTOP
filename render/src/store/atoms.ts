@@ -25,7 +25,7 @@ export const notesErrorAtom = atom<string | null>(null);
 export const selectedNoteAtom = atom<Note | null>(null);
 
 // Átomo para o filtro ativo
-export const activeFilterAtom = atom<string>('all');
+export const activeFilterAtom = atom<"all" | "pinned" | "deleted" | "trash">('all');
 
 // Átomo para controlar se o modal de criação está aberto
 export const createModalOpenAtom = atom<boolean>(false);
@@ -46,12 +46,26 @@ export const unpinnedNotesAtom = atom(
   (get) => get(notesAtom).filter(note => !note.isPinned && !note.deletedAt)
 );
 
+// Átomo derivado para notas excluídas
+export const deletedNotesAtom = atom(
+  (get) => get(notesAtom).filter(note => note.deletedAt)
+);
+
 // Átomo derivado para notas filtradas
 export const filteredNotesAtom = atom(
   (get) => {
     const activeFilter = get(activeFilterAtom);
     const pinnedNotes = get(pinnedNotesAtom);
     const unpinnedNotes = get(unpinnedNotesAtom);
+    const deletedNotes = get(deletedNotesAtom);
+    
+    if (activeFilter === 'trash') {
+      return {
+        pinned: [],
+        unpinned: deletedNotes,
+        totalCount: deletedNotes.length
+      };
+    }
     
     const filteredPinned = activeFilter === 'pinned' ? pinnedNotes : pinnedNotes;
     const filteredUnpinned = activeFilter === 'pinned' ? [] : unpinnedNotes;
