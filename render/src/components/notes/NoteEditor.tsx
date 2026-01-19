@@ -14,6 +14,7 @@ import {
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useNoteEditor } from '@/hooks/notes/useNoteEditor.Hook';
+import { useDebounce } from 'use-debounce';
 
 export function NoteEditor() {
   const { selectedNote, updateNote, deleteNote, togglePin, clearSelectedNote } = useNoteEditor();
@@ -29,18 +30,27 @@ export function NoteEditor() {
     setContent(selectedNote.content);
   }, [selectedNote]);
 
-  const handleSave = () => {
-    updateNote(selectedNote.id, { title, content });
-  };
+  const [debouncedTitle] = useDebounce(title, 500);
+  const [debouncedContent] = useDebounce(content, 500);
+
+  useEffect(() => {
+    if (debouncedTitle !== selectedNote.title) {
+      updateNote(selectedNote.id, { title: debouncedTitle });
+    }
+  }, [debouncedTitle, selectedNote.id, selectedNote.title, updateNote]);
+
+  useEffect(() => {
+    if (debouncedContent !== selectedNote.content) {
+      updateNote(selectedNote.id, { content: debouncedContent });
+    }
+  }, [debouncedContent, selectedNote.id, selectedNote.content, updateNote]);
 
   const handleTitleChange = (newTitle: string) => {
     setTitle(newTitle);
-    updateNote(selectedNote.id, { title: newTitle });
   };
 
   const handleContentChange = (newContent: string) => {
     setContent(newContent);
-    updateNote(selectedNote.id, { content: newContent });
   };
   
   const handleDelete = () => {

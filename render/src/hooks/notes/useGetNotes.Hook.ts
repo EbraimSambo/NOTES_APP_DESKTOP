@@ -29,20 +29,20 @@ export function useGetNotes({ page = 1, limit = 10, reset = false }: GetNotesPar
             const notesServer = await getNotes({ page: pageNum, limit });
             
             if (reset || pageNum === 1) {
-                setNotes(notesServer as unknown as Note[]);
+                setNotes(notesServer.notes as unknown as Note[]);
                 setPagination({
                     page: 1,
                     limit,
-                    hasMore: notesServer.length >= limit,
-                    totalCount: notesServer.length
+                    hasMore: notesServer.total >= limit,
+                    totalCount: notesServer.total
                 });
             } else {
-                setNotes(prevNotes => [...prevNotes, ...(notesServer as unknown as Note[])]);
+                setNotes(prevNotes => [...prevNotes, ...(notesServer.notes as unknown as Note[])]);
                 setPagination(prev => ({
                     ...prev,
                     page: pageNum,
-                    hasMore: notesServer.length >= limit,
-                    totalCount: prev.totalCount + notesServer.length
+                    hasMore: notesServer.total >= limit,
+                    totalCount: prev.totalCount + notesServer.total
                 }));
             }
         } catch (error) {

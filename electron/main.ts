@@ -25,7 +25,7 @@ function createWindow() {
         height: 800,
         minWidth: 1200,
         minHeight: 800,
-        title: 'BoaVida XLSX',
+        title: 'Notes',
         icon: path.join(__dirname, '../assets/images/logo.png'),
         show: false, // 👈 IMPORTANTE
         webPreferences: {}
@@ -57,8 +57,8 @@ app.whenReady().then(() => {
             url = 'index.html'
         }
 
-        // Create the absolute path to the file in the renderer folder
-        const filePath = path.join(__dirname, '../renderer', url)
+        // Create the absolute path to the file in the render folder
+        const filePath = path.join(__dirname, '../render', url)
 
         return net.fetch(pathToFileURL(filePath).toString())
     })

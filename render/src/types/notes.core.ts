@@ -6,12 +6,12 @@ export interface Tag {
 export interface Note {
   id: string;
   orderId: number;
-  title?: string;
-  content?: string;
+  title: string;
+  content: string;
   createdAt: Date;
   updatedAt: Date;
   color?: string;
-  isPinned?: boolean;
+  isPinned: boolean;
   tags?: Tag[];
 }
 

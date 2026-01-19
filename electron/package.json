@@ -5,10 +5,10 @@
   "main": "dist/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:next": "cd ../renderer && npm run dev",
+    "dev:next": "cd ../render && npm run dev",
     "dev:electron": "tsc && electron .",
     "dev": "concurrently \"npm run dev:next\" \"npm run dev:electron\"",
-    "build": "cd ../renderer && npm run build && cd ../electron && tsc",
+    "build": "cd ../render && npm run build && cd ../electron && tsc",
     "dist:win": "npm run build && electron-builder --win",
     "dist:linux": "npm run build && electron-builder --linux --config.directories.output=dist-linux",
     "dist": "npm run build && electron-builder --win --linux",
@@ -60,7 +60,7 @@
       "dist/**/*",
       "assets/**/*",
       {
-        "from": "../renderer/out",
+        "from": "../render/out",
         "to": "renderer",
         "filter": [
           "**/*"
