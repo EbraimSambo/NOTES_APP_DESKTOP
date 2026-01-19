@@ -43,16 +43,16 @@ export function EmptyState({ onNewNote }: EmptyStateProps) {
         transition={{ delay: 0.2 }}
         className="text-2xl font-bold text-foreground mb-3"
       >
-        Select a note
+        Selecione uma nota
       </motion.h2>
       
       <motion.p
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="text-muted-foreground text-center max-w-md mb-8"
-      >
-        Choose a note from the list to view or edit, or create a new one to get started.
+          className="text-muted-foreground text-center max-w-md mb-8"
+        >
+         Escolha uma nota da lista para visualizar ou editar, ou crie uma nova para começar.
       </motion.p>
 
       <motion.button
@@ -64,7 +64,7 @@ export function EmptyState({ onNewNote }: EmptyStateProps) {
         onClick={onNewNote}
         className="px-8 py-3 gradient-primary rounded-xl text-primary-foreground font-medium shadow-glow hover:opacity-90 transition-opacity"
       >
-        Create New Note
+        Criar Nova Nota
       </motion.button>
     </motion.div>
   );

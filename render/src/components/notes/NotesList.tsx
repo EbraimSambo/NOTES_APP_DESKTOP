@@ -107,6 +107,7 @@ export function NotesList({
           {/* Pinned Notes */}
           {pinnedNotes.length > 0 && (
             <motion.section
+              key="pinned-section"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="space-y-3"
@@ -136,6 +137,7 @@ export function NotesList({
           {/* Other Notes */}
           {unpinnedNotes.length > 0 && (
             <motion.section
+              key="unpinned-section"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="space-y-3"
@@ -167,6 +169,7 @@ export function NotesList({
           {/* Loading More Indicator */}
           {hasMore && (
             <div 
+              key="loading-indicator"
               ref={ref}
               className="flex justify-center py-4"
             >
