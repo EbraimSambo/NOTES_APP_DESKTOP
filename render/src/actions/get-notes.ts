@@ -1,5 +1,4 @@
-// "use server";
-
+"use server";
 import { dbDriver } from "@/config/drizzle.db";
 import { notesTable } from "@/config/note.schema";
 import { and, desc, eq, isNotNull, isNull, sql } from "drizzle-orm";
@@ -13,7 +12,8 @@ interface GetNotesParams {
 }
 
 export async function getNotes({ page, limit, isPinned, isDeleted }: GetNotesParams) {
-    return await dbDriver.transaction(async (tx) => {
+    
+    return await dbDriver.transaction(async (tx: any) => {
         const notes = await tx.select()
             .from(notesTable)
             .limit(limit)
@@ -33,9 +33,9 @@ export async function getNotes({ page, limit, isPinned, isDeleted }: GetNotesPar
                     isDeleted ? isNotNull(notesTable.deletedAt) : isNull(notesTable.deletedAt)
                 )
             )
-            .then((res) => Number(res[0].count))
+            .then((res: any) => Number(res[0].count))
         return {
-            notes: notes.map(note => ({
+            notes: notes.map((note: any) => ({
                 ...note,
                 color: note.color || undefined,
                 isPinned: note.isPinned === 'true',

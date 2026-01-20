@@ -1,5 +1,4 @@
 "use server";
-
 import { dbDriver } from "@/config/drizzle.db";
 import { notesTable } from "@/config/note.schema";
 import { and, desc, isNotNull, sql } from "drizzle-orm";
