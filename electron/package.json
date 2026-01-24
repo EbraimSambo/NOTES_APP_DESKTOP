@@ -88,13 +88,20 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "concurrently": "^9.2.1"
+    "@libsql/client": "^0.17.0",
+    "@types/uuid": "^9.0.8",
+    "concurrently": "^9.2.1",
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.45.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/node": "^25.0.3",
+    "drizzle-kit": "^0.31.8",
     "electron": "^39.2.7",
     "electron-builder": "^26.0.12",
     "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
   "pnpm": {

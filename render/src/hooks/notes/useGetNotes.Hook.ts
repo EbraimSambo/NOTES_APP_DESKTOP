@@ -1,9 +1,7 @@
 import React from "react";
-import { Note } from '@/types/notes.core';
-import { getNotes } from "@/actions/get-notes";
-import { getDeletedNotes } from "@/actions/get-deleted-notes";
 import { useAtom } from 'jotai';
 import { notesAtom, notesLoadingAtom, notesErrorAtom, paginationAtom, loadingMoreAtom } from '@/store/atoms';
+import { Note } from "@/types/notes.core";
 
 interface GetNotesParams {
     page?: number;
@@ -30,9 +28,9 @@ export function useGetNotes({ page = 1, limit = 10, reset = false, isPinned, isD
             }
             
             const notesServer = isDeleted 
-                ? await getDeletedNotes({ page: pageNum, limit })
-                : await getNotes({ page: pageNum, limit, isPinned, isDeleted });
-            
+                ? await window.electron.invoke<{ notes: Note[], total: number }>("get-deleted-notes", { page: pageNum, limit })
+                : await window.electron.invoke<{ notes: Note[], total: number }>("get-notes", { page: pageNum, limit });
+            console.log(notesServer);
             if (reset || pageNum === 1) {
                 setNotes(notesServer.notes as unknown as Note[]);
                 setPagination({

@@ -1,7 +1,6 @@
-"use server";
-import { dbDriver } from "@/config/drizzle.db";
-import { notesTable } from "@/config/note.schema";
-import { Note } from "@/types/notes.core";
+import { dbDriver } from "../config/drizzlle.config";
+import { notesTable } from "../config/note.schema";
+import { Note } from "../types/notes.core";
 
 export interface CreateNote{
     note: Omit<Note, 'id' | 'createdAt' | 'updatedAt' | 'orderId'> & { title: string; content: string }

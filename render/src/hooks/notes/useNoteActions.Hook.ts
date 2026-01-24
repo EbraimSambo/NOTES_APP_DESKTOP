@@ -1,16 +1,12 @@
 import { useAtom } from 'jotai';
 import { notesAtom } from '@/store/atoms';
 import { Note } from '@/types/notes.core';
-import { updateNote } from '@/actions/update-notes';
-import { deleteNote } from '@/actions/delete-note';
-import { restoreNote } from '@/actions/restore-note';
-
 export function useNoteActions() {
     const [notes, setNotes] = useAtom(notesAtom);
 
     const updateNoteById = async (id: string, updates: Partial<Note>) => {
         try {
-            const updatedNote = await updateNote({ id, updates });
+            const updatedNote = await window.electron.invoke("update-note", { id, updates });
             setNotes(prevNotes => 
                 prevNotes.map(note => 
                     note.id === id ? { ...note, ...updatedNote } : note
@@ -25,7 +21,7 @@ export function useNoteActions() {
 
     const deleteNoteById = async (id: string) => {
         try {
-            await deleteNote(id);
+            await window.electron.invoke("delete-note", { id });
             setNotes(prevNotes => 
                 prevNotes.map(note => 
                     note.id === id ? { ...note, deletedAt: new Date() } : note
@@ -51,7 +47,7 @@ export function useNoteActions() {
         console.log('Toggling pin from', note.isPinned, 'to', newPinState);
 
         try {
-            const updatedNote = await updateNote({ id, updates: { isPinned: newPinState } });
+            const updatedNote = await window.electron.invoke("update-note", { id, updates: { isPinned: newPinState } });
             console.log('Update successful, updatedNote:', updatedNote);
             
             setNotes(prevNotes => {
@@ -71,7 +67,7 @@ export function useNoteActions() {
 
     const restoreNoteById = async (id: string) => {
         try {
-            await restoreNote(id);
+            await window.electron.invoke("restore-note", { id });
             setNotes(prevNotes => 
                 prevNotes.map(note => 
                     note.id === id ? { ...note, deletedAt: undefined } : note

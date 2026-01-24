@@ -1,7 +1,7 @@
-import { CreateNote, createNote } from "@/actions/create-notes";
 import { useAtom } from 'jotai';
 import { notesAtom, createLoadingAtom, createErrorAtom, paginationAtom } from '@/store/atoms';
 import { useCallback } from 'react';
+import { CreateNote, Note } from '@/types/notes.core';
 
 export function useCreateNote() {
   const [notes, setNotes] = useAtom(notesAtom);
@@ -14,7 +14,7 @@ export function useCreateNote() {
     setError(null);
 
     try {
-      const newNote = await createNote(note);
+      const newNote = await window.electron.invoke<Note>('create-note', note);
       
       // Adicionar nota com animação suave
       setNotes(prevNotes => {

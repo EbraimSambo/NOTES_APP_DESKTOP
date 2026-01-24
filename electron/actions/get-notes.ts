@@ -1,6 +1,5 @@
-"use server";
-import { dbDriver } from "@/config/drizzle.db";
-import { notesTable } from "@/config/note.schema";
+import { dbDriver } from "../config/drizzlle.config";
+import { notesTable } from "../config/note.schema";
 import { and, desc, eq, isNotNull, isNull, sql } from "drizzle-orm";
 
 

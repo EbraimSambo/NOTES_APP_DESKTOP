@@ -7,11 +7,9 @@ interface NoteCardProps {
   note: Note;
   isSelected: boolean;
   onClick: () => void;
-  onTogglePin: () => void;
-  onRestore?: () => void;
 }
 
-export function NoteCard({ note, isSelected, onClick, onTogglePin, onRestore }: NoteCardProps) {
+export function NoteCard({ note, isSelected, onClick }: NoteCardProps) {
   const getPreview = (content: string) => {
     // Strip markdown and get first 100 chars
     return content

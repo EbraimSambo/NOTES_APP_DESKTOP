@@ -32,14 +32,3 @@ export const noteColors: Record<NoteColor, string> = {
   violet: 'hsl(270, 30%, 20%)',
   rose: 'hsl(350, 30%, 20%)',
 };
-
-
-
-export interface CreateNote{
-    note: Omit<Note, 'id' | 'createdAt' | 'updatedAt' | 'orderId'> & { title: string; content: string }
-}
-
-export interface UpdateNote {
-  id: string;
-  updates: Partial<Note>;
-}
