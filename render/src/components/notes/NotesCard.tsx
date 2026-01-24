@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { IconPin, IconPinFilled, IconDots, IconRestore } from '@tabler/icons-react';
+import { IconPinFilled, IconDots } from '@tabler/icons-react';
 import { formatDistanceToNow } from 'date-fns';
 import { Note } from '@/types/notes.core';
 import { ptBR } from 'date-fns/locale';
@@ -47,31 +47,6 @@ export function NoteCard({ note, isSelected, onClick }: NoteCardProps) {
 
       {/* Actions */}
       <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
-        {note.deletedAt && onRestore && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onRestore();
-            }}
-            className="p-1.5 rounded-lg hover:bg-green-500/10 text-green-600 transition-colors"
-          >
-            <IconRestore className="w-4 h-4" />
-          </button>
-        )}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            console.log('Pin button clicked, note.isPinned:', note.isPinned);
-            onTogglePin();
-          }}
-          className="p-1.5 rounded-lg hover:bg-accent transition-colors"
-        >
-          {note.isPinned ? (
-            <IconPinFilled className="w-4 h-4 text-primary" />
-          ) : (
-            <IconPin className="w-4 h-4 text-muted-foreground" />
-          )}
-        </button>
         <button className="p-1.5 rounded-lg hover:bg-accent transition-colors">
           <IconDots className="w-4 h-4 text-muted-foreground" />
         </button>

@@ -12,3 +12,4 @@
 /dist-win
 /dist-linux
 /dist
+/database.sqlite

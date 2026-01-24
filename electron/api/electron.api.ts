@@ -10,15 +10,15 @@ export async function exposeApi(ipcMain: Electron.IpcMain) {
 
     ipcMain.handle("get-notes", async (
         _event,
-        { page, limit }: { page: number; limit: number }
+        { page, limit, isPinned }: { page: number; limit: number, isPinned?: boolean }
     ) => {
         console.log("Getting notes:", page, limit)
-        return await getNotes({ page, limit })
+        return await getNotes({ page, limit, isPinned })
     });
 
     ipcMain.handle("get-deleted-notes", async (
         _event,
-        { page, limit }: { page: number; limit: number }
+        { page, limit, }: { page: number; limit: number }
     ) => {
         return await getDeletedNotes({ page, limit })
     });

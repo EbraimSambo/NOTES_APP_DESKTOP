@@ -28,8 +28,8 @@ export function useGetNotes({ page = 1, limit = 10, reset = false, isPinned, isD
             }
             
             const notesServer = isDeleted 
-                ? await window.electron.invoke<{ notes: Note[], total: number }>("get-deleted-notes", { page: pageNum, limit })
-                : await window.electron.invoke<{ notes: Note[], total: number }>("get-notes", { page: pageNum, limit });
+                ? await window.electron.invoke<{ notes: Note[], total: number }>("get-deleted-notes", { page: pageNum, limit})
+                : await window.electron.invoke<{ notes: Note[], total: number }>("get-notes", { page: pageNum, limit, isPinned: isPinned});
             console.log(notesServer);
             if (reset || pageNum === 1) {
                 setNotes(notesServer.notes as unknown as Note[]);
@@ -54,7 +54,7 @@ export function useGetNotes({ page = 1, limit = 10, reset = false, isPinned, isD
             setLoading(false);
             setLoadingMore(false);
         }
-    }, [limit, reset, setNotes, setLoading, setError, setPagination, setLoadingMore]);
+    }, [limit, reset, setNotes, setLoading, setError, setPagination, setLoadingMore, isPinned, isDeleted]);
 
     const loadMore = React.useCallback(() => {
         if (!pagination.hasMore || loadingMore || loading) return;
@@ -68,7 +68,7 @@ export function useGetNotes({ page = 1, limit = 10, reset = false, isPinned, isD
 
     React.useEffect(() => {
         fetchNotes(page, false);
-    }, [fetchNotes, page]);
+    }, [fetchNotes, page, isPinned, isDeleted]);
 
     const reorderNotes = (activeId: string, overId: string) => {
         setNotes(prevNotes => {

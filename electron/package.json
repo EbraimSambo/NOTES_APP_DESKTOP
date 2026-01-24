@@ -12,7 +12,8 @@
     "dist:win": "npm run build && electron-builder --win",
     "dist:linux": "npm run build && electron-builder --linux --config.directories.output=dist-linux",
     "dist": "npm run build && electron-builder --win --linux",
-    "clean": "rimraf dist dist-linux"
+    "clean": "rimraf dist dist-linux",
+    "db:push": "drizzle-kit push"
   },
   "build": {
     "appId": "com.quick-notes.desktop",
