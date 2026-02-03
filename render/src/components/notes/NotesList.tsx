@@ -226,8 +226,6 @@ export function NotesList({
                 note={activeNote}
                 isSelected={false}
                 onClick={() => {}}
-                onTogglePin={() => {}}
-                onRestore={onRestore ? () => onRestore(activeNote.id) : undefined}
               />
             </motion.div>
           ) : null}

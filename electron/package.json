@@ -78,7 +78,7 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": "always",
       "createStartMenuShortcut": true,
-      "shortcutName": "BoaVida XLSX",
+      "shortcutName": "QuickNotes",
       "installerIcon": "assets/images/logo.ico",
       "uninstallerIcon": "assets/images/logo.ico",
       "installerHeaderIcon": "assets/images/logo.ico"
